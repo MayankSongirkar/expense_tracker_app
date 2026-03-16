@@ -51,7 +51,7 @@ class ExpenseCard extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         leading: CircleAvatar(
-          backgroundColor: _getCategoryColor(expense.category).withValues(alpha: 0.2),
+          backgroundColor: _getCategoryColor(expense.category).withOpacity(0.2),
           child: Icon(
             _getCategoryIcon(expense.category),
             color: _getCategoryColor(expense.category),

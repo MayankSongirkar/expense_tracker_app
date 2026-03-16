@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../expenses/presentation/screens/main_screen.dart';
+import '../../../../core/theme/app_theme.dart';
 
 /// Simple onboarding screen for first-time users
 class OnboardingScreen extends StatefulWidget {
@@ -17,27 +18,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<OnboardingPage> _pages = [
     OnboardingPage(
       title: 'Welcome to Smart Expense Tracker',
-      description: 'Take control of your finances with our easy-to-use expense tracking app.',
-      icon: Icons.account_balance_wallet,
-      color: Colors.blue,
+      description: 'Take control of your finances with our easy-to-use expense tracking app built for Indian users.',
+      icon: Icons.account_balance_wallet_rounded,
+      color: AppTheme.primaryColor,
     ),
     OnboardingPage(
-      title: 'Track Your Expenses',
-      description: 'Add expenses quickly with categories, dates, and notes to stay organized.',
-      icon: Icons.add_circle_outline,
-      color: Colors.green,
+      title: 'Track Expenses in Rupees',
+      description: 'Add expenses quickly with Indian currency support, categories, dates, and notes.',
+      icon: Icons.currency_rupee_rounded,
+      color: AppTheme.secondaryColor,
+    ),
+    OnboardingPage(
+      title: 'Generate PDF Receipts',
+      description: 'Download professional PDF receipts for each expense with Indian numbering format.',
+      icon: Icons.receipt_long_rounded,
+      color: AppTheme.accentColor,
     ),
     OnboardingPage(
       title: 'Visualize Your Spending',
-      description: 'See your spending patterns with beautiful charts and analytics.',
-      icon: Icons.analytics,
-      color: Colors.purple,
-    ),
-    OnboardingPage(
-      title: 'Stay in Control',
-      description: 'Filter, search, and export your data to make informed financial decisions.',
-      icon: Icons.trending_up,
-      color: Colors.orange,
+      description: 'See your spending patterns with beautiful charts and monthly analytics.',
+      icon: Icons.analytics_rounded,
+      color: const Color(0xFF8B5CF6),
     ),
   ];
 

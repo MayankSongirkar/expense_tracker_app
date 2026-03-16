@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:printing/printing.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import '../../domain/entities/expense.dart';
@@ -43,6 +44,11 @@ class _ExpenseDetailsScreenState extends ConsumerState<ExpenseDetailsScreen> {
         title: Text(_isEditing ? 'Edit Expense' : 'Expense Details'),
         actions: [
           if (!_isEditing) ...[
+            IconButton(
+              onPressed: _downloadReceipt,
+              icon: const Icon(Icons.download),
+              tooltip: 'Download Receipt',
+            ),
             IconButton(
               onPressed: () => setState(() => _isEditing = true),
               icon: const Icon(Icons.edit),
@@ -94,6 +100,33 @@ class _ExpenseDetailsScreenState extends ConsumerState<ExpenseDetailsScreen> {
                 ],
               ),
             ),
+          ),
+          const SizedBox(height: 16),
+          // Action buttons
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: _downloadReceipt,
+                  icon: const Icon(Icons.download),
+                  label: const Text('Download Receipt'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: _shareReceipt,
+                  icon: const Icon(Icons.share),
+                  label: const Text('Share Receipt'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -147,7 +180,7 @@ class _ExpenseDetailsScreenState extends ConsumerState<ExpenseDetailsScreen> {
               controller: _amountController,
               decoration: const InputDecoration(
                 labelText: 'Amount',
-                prefixText: '\$ ',
+                prefixText: '₹ ',
               ),
               keyboardType: TextInputType.number,
               validator: (value) {
@@ -318,5 +351,62 @@ class _ExpenseDetailsScreenState extends ConsumerState<ExpenseDetailsScreen> {
     _amountController.dispose();
     _notesController.dispose();
     super.dispose();
+  }
+
+  Future<void> _downloadReceipt() async {
+    try {
+      final filePath = await ref.read(expenseProvider.notifier).generateReceiptPdf(widget.expense);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Receipt saved to: $filePath'),
+            action: SnackBarAction(
+              label: 'Open',
+              onPressed: () => _openReceipt(),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error generating receipt: ${e.toString()}')),
+        );
+      }
+    }
+  }
+
+  Future<void> _shareReceipt() async {
+    try {
+      final pdfBytes = await ref.read(expenseProvider.notifier).generateExpenseReceipt.call(widget.expense);
+      
+      await Printing.sharePdf(
+        bytes: pdfBytes,
+        filename: 'expense_receipt_${widget.expense.id}.pdf',
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error sharing receipt: ${e.toString()}')),
+        );
+      }
+    }
+  }
+
+  Future<void> _openReceipt() async {
+    try {
+      final pdfBytes = await ref.read(expenseProvider.notifier).generateExpenseReceipt.call(widget.expense);
+      
+      await Printing.layoutPdf(
+        onLayout: (format) async => pdfBytes,
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error opening receipt: ${e.toString()}')),
+        );
+      }
+    }
   }
 }

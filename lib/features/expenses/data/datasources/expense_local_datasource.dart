@@ -10,27 +10,25 @@ abstract class ExpenseLocalDataSource {
 }
 
 class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
-  final Box box;
+  final Box<ExpenseModel> box;
 
   ExpenseLocalDataSourceImpl(this.box);
 
   @override
   Future<List<ExpenseModel>> getExpenses() async {
-    final expenses = box.values
-        .map((e) => ExpenseModel.fromJson(Map<String, dynamic>.from(e)))
-        .toList();
+    final expenses = box.values.toList();
     expenses.sort((a, b) => b.date.compareTo(a.date));
     return expenses;
   }
 
   @override
   Future<void> addExpense(ExpenseModel expense) async {
-    await box.put(expense.id, expense.toJson());
+    await box.put(expense.id, expense);
   }
 
   @override
   Future<void> updateExpense(ExpenseModel expense) async {
-    await box.put(expense.id, expense.toJson());
+    await box.put(expense.id, expense);
   }
 
   @override

@@ -9,17 +9,15 @@ import '../../features/expenses/domain/usecases/delete_expense.dart';
 import '../../features/expenses/domain/usecases/get_expenses.dart';
 import '../../features/expenses/domain/usecases/update_expense.dart';
 import '../../features/expenses/domain/usecases/export_expenses_to_csv.dart';
+import '../../features/expenses/domain/usecases/generate_expense_receipt.dart';
 
 final sl = GetIt.instance;
 
 /// Initialize dependency injection
 Future<void> initializeDependencies() async {
-  // Register Hive adapters
-  Hive.registerAdapter(ExpenseModelAdapter());
-  
   // Hive boxes
-  final expenseBox = await Hive.openBox('expenses');
-  sl.registerSingleton<Box>(expenseBox);
+  final expenseBox = await Hive.openBox<ExpenseModel>('expenses');
+  sl.registerSingleton<Box<ExpenseModel>>(expenseBox);
 
   // Data sources
   sl.registerLazySingleton<ExpenseLocalDataSource>(
@@ -37,4 +35,5 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton(() => GetExpenses(sl()));
   sl.registerLazySingleton(() => UpdateExpense(sl()));
   sl.registerLazySingleton(() => ExportExpensesToCsv(sl()));
+  sl.registerLazySingleton(() => GenerateExpenseReceipt());
 }
