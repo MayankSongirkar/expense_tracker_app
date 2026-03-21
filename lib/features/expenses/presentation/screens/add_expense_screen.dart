@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/services/analytics_service.dart';
 import '../../domain/entities/expense.dart';
 import '../providers/expense_provider.dart';
 import '../widgets/gradient_container.dart';
@@ -34,6 +35,10 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen>
   @override
   void initState() {
     super.initState();
+    
+    // Log screen view for analytics
+    AnalyticsService.logScreenView('add_expense');
+    
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,

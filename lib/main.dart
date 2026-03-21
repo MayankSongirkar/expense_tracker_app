@@ -11,10 +11,16 @@
 /// Author: Smart Expense Tracker Team
 /// Version: 1.0.0
 
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'firebase_options.dart';
 import 'core/di/injection_container.dart';
+import 'core/services/crashlytics_service.dart';
+import 'core/services/analytics_service.dart';
 import 'core/theme/app_theme.dart';
 import 'features/expenses/data/models/expense_model.dart';
 import 'features/expenses/data/models/monthly_archive_model.dart';
@@ -27,12 +33,35 @@ import 'features/onboarding/presentation/screens/onboarding_screen.dart';
 /// 
 /// Initializes all required services and dependencies before starting the app:
 /// - Flutter widget binding
+/// - Firebase core services and Crashlytics
 /// - Hive database with adapters
 /// - Dependency injection container
 /// - Riverpod provider scope
 void main() async {
   // Ensure Flutter framework is initialized before async operations
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Firebase core services
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
+  // Initialize Crashlytics service
+  await CrashlyticsService.initialize();
+  
+  // Initialize Analytics service
+  await AnalyticsService.initialize();
+  
+  // Set up global error handlers for crash reporting
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  
+  // Pass all uncaught asynchronous errors to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
   
   // Initialize Hive database for local storage
   await Hive.initFlutter();
@@ -44,6 +73,10 @@ void main() async {
   
   // Initialize dependency injection container with all services
   await initializeDependencies();
+  
+  // Log app startup
+  await CrashlyticsService.log('App started successfully');
+  await AnalyticsService.logAppLaunch();
   
   // Start the application with Riverpod provider scope
   runApp(const ProviderScope(child: MyApp()));

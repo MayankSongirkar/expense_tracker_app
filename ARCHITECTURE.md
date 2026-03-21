@@ -44,6 +44,7 @@ The application follows Uncle Bob's Clean Architecture pattern with clear separa
 lib/
 ├── core/                           # Core utilities and shared components
 │   ├── di/                        # Dependency injection setup
+│   ├── services/                  # Core services (Crashlytics, etc.)
 │   ├── theme/                     # Application theming
 │   └── utils/                     # Utility classes and helpers
 ├── features/                      # Feature-based organization
@@ -140,6 +141,37 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton(() => AddExpense(sl()));
 }
 ```
+
+### Core Services
+The application includes several core services for cross-cutting concerns:
+
+#### Crashlytics Service
+Provides centralized error reporting and monitoring:
+
+```dart
+class CrashlyticsService {
+  // Log custom errors with context
+  static Future<void> logError(String message, {
+    dynamic exception,
+    StackTrace? stackTrace,
+    bool fatal = false,
+  });
+  
+  // Track user actions for debugging
+  static Future<void> log(String message);
+  
+  // Set user context for crash reports
+  static Future<void> setUserId(String userId);
+  static Future<void> setCustomKey(String key, dynamic value);
+}
+```
+
+**Features:**
+- Automatic crash detection and reporting
+- Custom error logging with stack traces
+- User action tracking for debugging context
+- Performance monitoring integration
+- Real-time alerts in Firebase Console
 
 ## Key Features Implementation
 

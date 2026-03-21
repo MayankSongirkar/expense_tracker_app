@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/animations/app_animations.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../../domain/entities/expense.dart';
@@ -35,8 +36,28 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final expenseState = ref.watch(expenseProvider);
     
     if (expenseState.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: Theme.of(context).brightness == Brightness.dark
+                  ? [const Color(0xFF020617), const Color(0xFF0F172A)]
+                  : [const Color(0xFFFAFAFA), const Color(0xFFFFFFFF)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 16),
+                Text('Loading your expenses...'),
+              ],
+            ),
+          ),
+        ),
       );
     }
 
@@ -59,38 +80,75 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           end: Alignment.bottomCenter,
         ),
       ),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildWelcomeHeader(),
-            const SizedBox(height: 24),
-            
-            // Show welcome card if no expenses exist
-            if (expenseState.expenses.isEmpty) ...[
-              WelcomeCard(
-                onAddExpense: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AddExpenseScreen(),
-                    ),
-                  );
-                },
+      child: RefreshIndicator(
+        onRefresh: () async {
+          ref.read(expenseProvider.notifier).loadExpenses();
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Welcome header with slide animation
+              SlideInAnimation.fromTop(
+                delay: const Duration(milliseconds: 100),
+                child: _buildWelcomeHeader(),
               ),
-            ] else ...[
-              _buildMonthlyOverview(totalAmount, currentMonth, monthlyExpenses),
+              
               const SizedBox(height: 24),
-              if (expenseState.expenses.isNotEmpty) ...[
-                _buildQuickStats(monthlyExpenses),
+              
+              // Show welcome card if no expenses exist
+              if (expenseState.expenses.isEmpty) ...[
+                SlideInAnimation.fromBottom(
+                  delay: const Duration(milliseconds: 200),
+                  child: WelcomeCard(
+                    onAddExpense: () {
+                      Navigator.push(
+                        context,
+                        FadeScalePageRoute(
+                          child: const AddExpenseScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ] else ...[
+                // Monthly overview with animation
+                SlideInAnimation.fromLeft(
+                  delay: const Duration(milliseconds: 200),
+                  child: _buildMonthlyOverview(totalAmount, currentMonth, monthlyExpenses),
+                ),
+                
                 const SizedBox(height: 24),
-                _buildCategoryChart(monthlyExpenses),
+                
+                // Quick stats with staggered animation
+                SlideInAnimation.fromRight(
+                  delay: const Duration(milliseconds: 300),
+                  child: _buildQuickStats(monthlyExpenses),
+                ),
+                
                 const SizedBox(height: 24),
+                
+                // Category chart with fade animation
+                SlideInAnimation.fromBottom(
+                  delay: const Duration(milliseconds: 400),
+                  child: _buildCategoryChart(monthlyExpenses),
+                ),
+                
+                const SizedBox(height: 24),
+                
+                // Recent transactions with staggered list animation
+                SlideInAnimation.fromBottom(
+                  delay: const Duration(milliseconds: 500),
+                  child: _buildRecentTransactions(monthlyExpenses),
+                ),
               ],
-              _buildRecentTransactions(monthlyExpenses),
+              
+              // Add some bottom padding for better scrolling
+              const SizedBox(height: 100),
             ],
-          ],
+          ),
         ),
       ),
     );
@@ -133,75 +191,146 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _buildMonthlyOverview(double totalAmount, DateTime currentMonth, List<Expense> monthlyExpenses) {
-    return AnimatedGradientContainer(
-      padding: const EdgeInsets.all(24),
-      borderRadius: BorderRadius.circular(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    DateHelper.formatDate(currentMonth, 'MMMM yyyy'),
-                    style: const TextStyle(
+    return BounceAnimation(
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          gradient: AppTheme.primaryGradient,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.primaryColor.withOpacity(0.3),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      DateHelper.formatDate(currentMonth, 'MMMM yyyy'),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'Total Expenses',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+                PulseAnimation(
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Icon(
+                      monthlyExpenses.isEmpty 
+                          ? Icons.account_balance_wallet_outlined
+                          : Icons.trending_up_rounded,
                       color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      size: 24,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'Total Expenses',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 20),
+            
+            // Animated counter for total amount
+            AnimatedCounter(
+              value: totalAmount,
+              textStyle: const TextStyle(
+                color: Colors.white,
+                fontSize: 36,
+                fontWeight: FontWeight.w900,
+                letterSpacing: -1,
+              ),
+              prefix: '₹',
+              duration: AnimationConstants.slow,
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Monthly stats row
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatItem(
+                    'Transactions',
+                    monthlyExpenses.length.toString(),
+                    Icons.receipt_long_outlined,
                   ),
-                ],
-              ),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(
-                  monthlyExpenses.isEmpty 
-                      ? Icons.account_balance_wallet_outlined
-                      : Icons.trending_up_rounded,
-                  color: Colors.white,
-                  size: 24,
+                Container(
+                  width: 1,
+                  height: 40,
+                  color: Colors.white.withOpacity(0.3),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: _buildStatItem(
+                    'Average',
+                    monthlyExpenses.isEmpty 
+                        ? '₹0'
+                        : CurrencyFormatter.format(totalAmount / monthlyExpenses.length),
+                    Icons.analytics_outlined,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatItem(String label, String value, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Column(
+        children: [
+          Icon(
+            icon,
+            color: Colors.white70,
+            size: 20,
           ),
-          
-          const SizedBox(height: 16),
-          
+          const SizedBox(height: 8),
           Text(
-            totalAmount == 0 
-                ? '₹0.00' 
-                : CurrencyFormatter.format(totalAmount),
+            value,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 32,
-              fontWeight: FontWeight.w800,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
             ),
           ),
-          
-          const SizedBox(height: 8),
-          
+          const SizedBox(height: 4),
           Text(
-            monthlyExpenses.isEmpty 
-                ? 'No expenses this month yet'
-                : '${monthlyExpenses.length} transaction${monthlyExpenses.length == 1 ? '' : 's'} this month',
+            label,
             style: const TextStyle(
               color: Colors.white70,
-              fontSize: 14,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
@@ -214,26 +343,63 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         ? monthlyExpenses.fold<double>(0, (sum, e) => sum + e.amount) / monthlyExpenses.length
         : 0.0;
 
+    final highestExpense = monthlyExpenses.isNotEmpty
+        ? monthlyExpenses.reduce((a, b) => a.amount > b.amount ? a : b).amount
+        : 0.0;
+
     return Row(
       children: [
+        // Transactions count with staggered animation
         Expanded(
-          child: StatsCard(
-            title: 'Transactions',
-            value: monthlyExpenses.length.toString(),
-            icon: Icons.receipt_long_rounded,
-            color: AppTheme.secondaryColor,
+          child: StaggeredListAnimation(
+            index: 0,
+            delay: const Duration(milliseconds: 100),
+            child: BounceAnimation(
+              child: StatsCard(
+                title: 'Transactions',
+                value: monthlyExpenses.length.toString(),
+                icon: Icons.receipt_long_rounded,
+                color: AppTheme.secondaryColor,
+              ),
+            ),
           ),
         ),
         
         const SizedBox(width: 16),
         
+        // Average expense with staggered animation
         Expanded(
-          child: StatsCard(
-            title: 'Average',
-            value: avgExpense.toStringAsFixed(0),
-            icon: Icons.analytics_rounded,
-            color: AppTheme.accentColor,
-            isAmount: true,
+          child: StaggeredListAnimation(
+            index: 1,
+            delay: const Duration(milliseconds: 100),
+            child: BounceAnimation(
+              child: StatsCard(
+                title: 'Average',
+                value: avgExpense.toStringAsFixed(0),
+                icon: Icons.analytics_rounded,
+                color: AppTheme.accentColor,
+                isAmount: true,
+              ),
+            ),
+          ),
+        ),
+        
+        const SizedBox(width: 16),
+        
+        // Highest expense with staggered animation
+        Expanded(
+          child: StaggeredListAnimation(
+            index: 2,
+            delay: const Duration(milliseconds: 100),
+            child: BounceAnimation(
+              child: StatsCard(
+                title: 'Highest',
+                value: highestExpense.toStringAsFixed(0),
+                icon: Icons.trending_up_rounded,
+                color: AppTheme.errorColor,
+                isAmount: true,
+              ),
+            ),
           ),
         ),
       ],
@@ -241,39 +407,72 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _buildCategoryChart(List<Expense> monthlyExpenses) {
-    return GradientContainer(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Category Breakdown',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  Icons.pie_chart_rounded,
-                  color: AppTheme.primaryColor,
-                  size: 20,
-                ),
-              ),
-            ],
+    return BounceAnimation(
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).shadowColor.withOpacity(0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
+            ),
+          ],
+          border: Border.all(
+            color: Theme.of(context).dividerColor.withOpacity(0.1),
           ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header with animation
+            SlideInAnimation.fromLeft(
+              delay: const Duration(milliseconds: 100),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Category Breakdown',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : const Color(0xFF1E293B),
+                    ),
+                  ),
+                  PulseAnimation(
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        gradient: AppTheme.primaryGradient,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.primaryColor.withOpacity(0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.pie_chart_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 24),
           
-          const SizedBox(height: 20),
-          
-          CategoryPieChart(expenses: monthlyExpenses),
-        ],
+            CategoryPieChart(expenses: monthlyExpenses),
+          ],
+        ),
       ),
     );
   }
@@ -284,94 +483,198 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Recent Transactions',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
+        // Section header with animation
+        SlideInAnimation.fromLeft(
+          delay: const Duration(milliseconds: 100),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Recent Transactions',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : const Color(0xFF1E293B),
+                ),
               ),
-            ),
-            if (monthlyExpenses.length > 5)
-              TextButton(
-                onPressed: () {
-                  // Navigate to full expense list
-                },
-                child: const Text('View All'),
-              ),
-          ],
+              if (monthlyExpenses.length > 5)
+                BounceAnimation(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppTheme.primaryColor.withOpacity(0.3),
+                      ),
+                    ),
+                    child: Text(
+                      'View All',
+                      style: TextStyle(
+                        color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    // Navigate to full expense list
+                  },
+                ),
+            ],
+          ),
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: 20),
         
         if (recentExpenses.isEmpty)
-          _buildEmptyState()
+          SlideInAnimation.fromBottom(
+            delay: const Duration(milliseconds: 200),
+            child: _buildEmptyState(),
+          )
         else
-          ...recentExpenses.map((expense) => ModernExpenseCard(
-            expense: expense,
-            onTap: () => _navigateToDetails(expense),
-          )),
+          // Staggered list animation for expense cards
+          ...recentExpenses.asMap().entries.map((entry) {
+            final index = entry.key;
+            final expense = entry.value;
+            
+            return StaggeredListAnimation(
+              index: index,
+              delay: const Duration(milliseconds: 150),
+              child: BounceAnimation(
+                child: ModernExpenseCard(
+                  expense: expense,
+                  onTap: () => _navigateToDetails(expense),
+                ),
+                onTap: () => _navigateToDetails(expense),
+              ),
+            );
+          }),
       ],
     );
   }
 
   Widget _buildEmptyState() {
-    return GradientContainer(
-      padding: const EdgeInsets.all(32),
-      child: Center(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(40),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: Theme.of(context).brightness == Brightness.dark
+              ? [
+                  AppTheme.primaryColor.withOpacity(0.1),
+                  AppTheme.secondaryColor.withOpacity(0.05),
+                ]
+              : [
+                  AppTheme.primaryColor.withOpacity(0.05),
+                  AppTheme.secondaryColor.withOpacity(0.02),
+                ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: AppTheme.primaryColor.withOpacity(0.2),
+        ),
+      ),
+      child: Column(
+        children: [
+          // Animated icon
+          PulseAnimation(
+            child: Container(
+              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withOpacity(0.1),
+                gradient: AppTheme.primaryGradient,
                 shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppTheme.primaryColor.withOpacity(0.3),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.receipt_long_outlined,
                 size: 48,
-                color: AppTheme.primaryColor,
+                color: Colors.white,
               ),
             ),
-            const SizedBox(height: 24),
-            Text(
-              'Start tracking your expenses',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white.withOpacity(0.9)
-                    : const Color(0xFF1E293B),
+          ),
+          
+          const SizedBox(height: 24),
+          
+          Text(
+            'Start tracking your expenses',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : const Color(0xFF1E293B),
+            ),
+            textAlign: TextAlign.center,
+          ),
+          
+          const SizedBox(height: 12),
+          
+          Text(
+            'Add your first expense to see insights and analytics',
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white.withOpacity(0.7)
+                  : const Color(0xFF64748B),
+            ),
+            textAlign: TextAlign.center,
+          ),
+          
+          const SizedBox(height: 24),
+          
+          // Add expense button
+          BounceAnimation(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              decoration: BoxDecoration(
+                gradient: AppTheme.primaryGradient,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppTheme.primaryColor.withOpacity(0.3),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.add_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    'Add Expense',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Add your first expense to see insights and analytics',
-              style: TextStyle(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white.withOpacity(0.6)
-                    : const Color(0xFF64748B),
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.pushNamed(context, '/add-expense');
-              },
-              icon: const Icon(Icons.add_rounded),
-              label: const Text('Add First Expense'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+            onTap: () {
+              Navigator.push(
+                context,
+                FadeScalePageRoute(
+                  child: const AddExpenseScreen(),
                 ),
-              ),
-            ),
-          ],
-        ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

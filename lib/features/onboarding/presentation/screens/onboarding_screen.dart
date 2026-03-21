@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../expenses/presentation/screens/main_screen.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/services/analytics_service.dart';
 
 /// Simple onboarding screen for first-time users
 class OnboardingScreen extends StatefulWidget {
@@ -14,6 +15,13 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Log screen view for analytics
+    AnalyticsService.logScreenView('onboarding');
+  }
 
   final List<OnboardingPage> _pages = [
     OnboardingPage(
@@ -168,6 +176,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> _completeOnboarding() async {
     final box = await Hive.openBox('settings');
     await box.put('isOnboardingCompleted', true);
+    
+    // Log onboarding completion for analytics
+    await AnalyticsService.logOnboardingCompleted();
     
     if (mounted) {
       Navigator.pushReplacement(

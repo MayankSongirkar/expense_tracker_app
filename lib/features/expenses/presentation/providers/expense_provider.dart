@@ -14,9 +14,12 @@
 /// - CSV export functionality
 /// - PDF receipt generation
 /// - Error handling and loading states
+/// - Crashlytics integration for error tracking
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/services/crashlytics_service.dart';
+import '../../../../core/services/analytics_service.dart';
 import '../../domain/entities/expense.dart';
 import '../../domain/usecases/add_expense.dart';
 import '../../domain/usecases/delete_expense.dart';
@@ -106,6 +109,12 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
       final expenses = await getExpenses();
       state = state.copyWith(expenses: expenses, isLoading: false);
     } catch (e) {
+      // Log error to Crashlytics for monitoring
+      await CrashlyticsService.logError(
+        'Failed to load expenses',
+        exception: e,
+        stackTrace: StackTrace.current,
+      );
       state = state.copyWith(error: e.toString(), isLoading: false);
     }
   }
@@ -117,8 +126,21 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
   Future<void> add(Expense expense) async {
     try {
       await addExpense(expense);
+      
+      // Log analytics event for expense addition
+      await AnalyticsService.logExpenseAdded(
+        amount: expense.amount,
+        category: expense.category,
+      );
+      
       await loadExpenses();
     } catch (e) {
+      // Log error to Crashlytics for monitoring
+      await CrashlyticsService.logError(
+        'Failed to add expense: ${expense.title}',
+        exception: e,
+        stackTrace: StackTrace.current,
+      );
       state = state.copyWith(error: e.toString());
     }
   }
@@ -129,9 +151,29 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
   /// Reloads the expense list after successful update.
   Future<void> update(Expense expense) async {
     try {
+      // Find original expense for analytics comparison
+      final originalExpense = state.expenses.firstWhere(
+        (e) => e.id == expense.id,
+        orElse: () => expense,
+      );
+      
       await updateExpense(expense);
+      
+      // Log analytics event for expense editing
+      await AnalyticsService.logExpenseEdited(
+        originalAmount: originalExpense.amount,
+        newAmount: expense.amount,
+        category: expense.category,
+      );
+      
       await loadExpenses();
     } catch (e) {
+      // Log error to Crashlytics for monitoring
+      await CrashlyticsService.logError(
+        'Failed to update expense: ${expense.title}',
+        exception: e,
+        stackTrace: StackTrace.current,
+      );
       state = state.copyWith(error: e.toString());
     }
   }
@@ -142,9 +184,25 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
   /// Reloads the expense list after successful deletion.
   Future<void> delete(String id) async {
     try {
+      // Find expense for analytics before deletion
+      final expense = state.expenses.firstWhere((e) => e.id == id);
+      
       await deleteExpense(id);
+      
+      // Log analytics event for expense deletion
+      await AnalyticsService.logExpenseDeleted(
+        amount: expense.amount,
+        category: expense.category,
+      );
+      
       await loadExpenses();
     } catch (e) {
+      // Log error to Crashlytics for monitoring
+      await CrashlyticsService.logError(
+        'Failed to delete expense with ID: $id',
+        exception: e,
+        stackTrace: StackTrace.current,
+      );
       state = state.copyWith(error: e.toString());
     }
   }
@@ -154,7 +212,20 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
   /// Returns the file path of the generated CSV file.
   /// Uses the current expense list from state.
   Future<String> exportToCsv() async {
-    return await exportExpensesToCsv(state.expenses);
+    final filePath = await exportExpensesToCsv(state.expenses);
+    
+    // Log analytics event for CSV export
+    final totalAmount = state.expenses.fold<double>(
+      0.0,
+      (sum, expense) => sum + expense.amount,
+    );
+    
+    await AnalyticsService.logCSVExported(
+      expenseCount: state.expenses.length,
+      totalAmount: totalAmount,
+    );
+    
+    return filePath;
   }
 
   /// Generates a PDF receipt for a specific expense
@@ -162,7 +233,15 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
   /// [expense] The expense to generate receipt for
   /// Returns the file path of the generated PDF receipt.
   Future<String> generateReceiptPdf(Expense expense) async {
-    return await generateExpenseReceipt.saveToDevice(expense);
+    final filePath = await generateExpenseReceipt.saveToDevice(expense);
+    
+    // Log analytics event for PDF generation
+    await AnalyticsService.logPDFGenerated(
+      amount: expense.amount,
+      category: expense.category,
+    );
+    
+    return filePath;
   }
 
   /// Filters expenses by category

@@ -23,10 +23,10 @@
 /// final archive = await archiveMonth(year: 2024, month: 3);
 /// ```
 
-import '../entities/expense.dart';
 import '../entities/monthly_archive.dart';
 import '../repositories/expense_repository.dart';
 import '../repositories/expense_archive_repository.dart';
+import '../../../../core/services/analytics_service.dart';
 
 /// Use case for archiving current month expenses and resetting
 /// 
@@ -95,6 +95,13 @@ class ArchiveCurrentMonth {
     for (final expense in monthExpenses) {
       await expenseRepository.deleteExpense(expense.id);
     }
+    
+    // Log analytics event for monthly reset
+    final totalAmount = monthExpenses.fold<double>(0, (sum, e) => sum + e.amount);
+    await AnalyticsService.logMonthlyReset(
+      expenseCount: monthExpenses.length,
+      totalAmount: totalAmount,
+    );
     
     return archive;
   }
