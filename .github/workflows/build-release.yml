@@ -1,0 +1,169 @@
+name: Build and Release APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+        - patch
+        - minor
+        - major
+      release_notes:
+        description: 'Release notes'
+        required: false
+        default: 'Bug fixes and improvements'
+
+env:
+  FLUTTER_VERSION: '3.24.0'
+
+jobs:
+  build-and-release:
+    name: Build and Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
+        
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+        
+    - name: Get current version
+      id: current_version
+      run: |
+        VERSION=$(grep "version:" pubspec.yaml | cut -d' ' -f2 | cut -d'+' -f1)
+        BUILD_NUMBER=$(grep "version:" pubspec.yaml | cut -d'+' -f2)
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "build_number=$BUILD_NUMBER" >> $GITHUB_OUTPUT
+        
+    - name: Calculate new version
+      id: new_version
+      run: |
+        CURRENT_VERSION="${{ steps.current_version.outputs.version }}"
+        RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+        
+        IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+        MAJOR=${VERSION_PARTS[0]}
+        MINOR=${VERSION_PARTS[1]}
+        PATCH=${VERSION_PARTS[2]}
+        
+        case $RELEASE_TYPE in
+          "major")
+            MAJOR=$((MAJOR + 1))
+            MINOR=0
+            PATCH=0
+            ;;
+          "minor")
+            MINOR=$((MINOR + 1))
+            PATCH=0
+            ;;
+          "patch")
+            PATCH=$((PATCH + 1))
+            ;;
+        esac
+        
+        NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+        NEW_BUILD_NUMBER=$(($(date +%s) / 60))  # Unique build number based on timestamp
+        
+        echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+        echo "build_number=$NEW_BUILD_NUMBER" >> $GITHUB_OUTPUT
+        echo "tag=v$NEW_VERSION" >> $GITHUB_OUTPUT
+        
+    - name: Update pubspec.yaml
+      run: |
+        sed -i "s/version: .*/version: ${{ steps.new_version.outputs.version }}+${{ steps.new_version.outputs.build_number }}/" pubspec.yaml
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Generate code
+      run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      
+    - name: Create .env file
+      run: |
+        echo "NEWS_API_KEY=${{ secrets.NEWS_API_KEY }}" > .env
+        echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env
+        
+    - name: Build APK
+      run: |
+        flutter build apk --release \
+          --build-name=${{ steps.new_version.outputs.version }} \
+          --build-number=${{ steps.new_version.outputs.build_number }}
+          
+    - name: Build App Bundle
+      run: |
+        flutter build appbundle --release \
+          --build-name=${{ steps.new_version.outputs.version }} \
+          --build-number=${{ steps.new_version.outputs.build_number }}
+          
+    - name: Rename APK
+      run: |
+        mv build/app/outputs/flutter-apk/app-release.apk \
+           build/app/outputs/flutter-apk/expense-tracker-${{ steps.new_version.outputs.version }}.apk
+           
+    - name: Rename App Bundle
+      run: |
+        mv build/app/outputs/bundle/release/app-release.aab \
+           build/app/outputs/bundle/release/expense-tracker-${{ steps.new_version.outputs.version }}.aab
+           
+    - name: Generate changelog
+      id: changelog
+      run: |
+        if [ -f CHANGELOG.md ]; then
+          CHANGELOG=$(head -n 20 CHANGELOG.md)
+        else
+          CHANGELOG="Release ${{ steps.new_version.outputs.version }}"
+        fi
+        echo "changelog<<EOF" >> $GITHUB_OUTPUT
+        echo "$CHANGELOG" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+        
+    - name: Commit version bump
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add pubspec.yaml
+        git commit -m "Bump version to ${{ steps.new_version.outputs.version }}" || exit 0
+        git push
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.new_version.outputs.tag }}
+        name: "Release ${{ steps.new_version.outputs.version }}"
+        body: |
+          ## What's Changed
+          ${{ github.event.inputs.release_notes }}
+          
+          ## Changelog
+          ${{ steps.changelog.outputs.changelog }}
+          
+          ## Build Information
+          - Version: ${{ steps.new_version.outputs.version }}
+          - Build Number: ${{ steps.new_version.outputs.build_number }}
+          - Commit: ${{ github.sha }}
+          
+        files: |
+          build/app/outputs/flutter-apk/expense-tracker-${{ steps.new_version.outputs.version }}.apk
+          build/app/outputs/bundle/release/expense-tracker-${{ steps.new_version.outputs.version }}.aab
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

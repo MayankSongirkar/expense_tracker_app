@@ -10,6 +10,7 @@ import 'dashboard_screen.dart';
 import 'expense_list_screen.dart';
 import 'analytics_screen.dart';
 import 'add_expense_screen.dart';
+import '../../../news/presentation/screens/news_screen.dart';
 
 /// Main screen with bottom navigation
 class MainScreen extends ConsumerStatefulWidget {
@@ -26,6 +27,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     const DashboardScreen(),
     const ExpenseListScreen(),
     const AnalyticsScreen(),
+    const NewsScreen(),
   ];
 
   @override
@@ -159,6 +161,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         return 'Expenses';
       case 2:
         return 'Analytics';
+      case 3:
+        return 'Finance News';
       default:
         return 'Smart Expense Tracker';
     }
@@ -223,6 +227,12 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 outlinedIcon: Icons.analytics_outlined,
                 label: 'Analytics',
               ),
+              _buildNavItem(
+                index: 3,
+                icon: Icons.newspaper_rounded,
+                outlinedIcon: Icons.newspaper_outlined,
+                label: 'News',
+              ),
             ],
           ),
         ),
@@ -251,7 +261,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
               });
               
               // Log screen navigation for analytics
-              final screenNames = ['dashboard', 'expense_list', 'analytics'];
+              final screenNames = ['dashboard', 'expense_list', 'analytics', 'news'];
               AnalyticsService.logScreenView(screenNames[index]);
               
               // Haptic feedback for better UX

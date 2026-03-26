@@ -22,12 +22,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_theme.dart';
-import '../../../../core/utils/currency_formatter.dart';
 import '../../domain/entities/expense.dart';
 import '../providers/expense_provider.dart';
 import '../widgets/gradient_container.dart';
 import '../widgets/monthly_spending_chart.dart';
 import '../widgets/category_pie_chart.dart';
+import '../widgets/category_tracker_chart.dart';
 import '../widgets/stats_card.dart';
 
 /// Analytics screen widget for expense insights and visualizations
@@ -90,6 +90,8 @@ class AnalyticsScreen extends ConsumerWidget {
             _buildOverviewStats(totalSpending, avgMonthlySpending, expenses.length),
             const SizedBox(height: 24),
             _buildMonthlyChart(context, expenses),
+            const SizedBox(height: 24),
+            _buildCategoryTracker(context, expenses),
             const SizedBox(height: 24),
             _buildCategoryAnalysis(context, expenses),
           ],
@@ -224,6 +226,27 @@ class AnalyticsScreen extends ConsumerWidget {
           MonthlySpendingChart(expenses: expenses),
         ],
       ),
+    );
+  }
+
+  /// Builds the enhanced category tracker section
+  /// 
+  /// Creates a comprehensive category tracking section with:
+  /// - Interactive pie chart with touch feedback
+  /// - Detailed category breakdown with progress bars
+  /// - Transaction counts and percentages
+  /// - Professional Material 3 design
+  /// 
+  /// [context] Build context for theme access
+  /// [expenses] List of expenses to analyze by category
+  Widget _buildCategoryTracker(BuildContext context, List<Expense> expenses) {
+    if (expenses.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    
+    return CategoryTrackerChart(
+      expenses: expenses,
+      showBreakdown: true,
     );
   }
 

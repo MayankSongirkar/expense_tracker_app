@@ -1,0 +1,203 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+env:
+  FLUTTER_VERSION: '3.24.0'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Generate code
+      run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      
+    - name: Analyze code
+      run: flutter analyze
+      
+    - name: Run tests
+      run: flutter test --coverage
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: coverage/lcov.info
+
+  build-apk:
+    name: Build APK
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' || github.event_name == 'release'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
+        
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Generate code
+      run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      
+    - name: Create .env file
+      run: |
+        echo "NEWS_API_KEY=${{ secrets.NEWS_API_KEY }}" > .env
+        echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env
+        
+    - name: Build APK (Debug)
+      if: github.ref != 'refs/heads/main' && github.event_name != 'release'
+      run: flutter build apk --debug --build-name=${{ github.run_number }} --build-number=${{ github.run_number }}
+      
+    - name: Build APK (Release)
+      if: github.ref == 'refs/heads/main' || github.event_name == 'release'
+      run: flutter build apk --release --build-name=${{ github.run_number }} --build-number=${{ github.run_number }}
+      
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: expense-tracker-apk
+        path: build/app/outputs/flutter-apk/*.apk
+        retention-days: 30
+
+  build-appbundle:
+    name: Build App Bundle
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' || github.event_name == 'release'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
+        
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Generate code
+      run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      
+    - name: Create .env file
+      run: |
+        echo "NEWS_API_KEY=${{ secrets.NEWS_API_KEY }}" > .env
+        echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env
+        
+    - name: Build App Bundle
+      run: flutter build appbundle --release --build-name=${{ github.run_number }} --build-number=${{ github.run_number }}
+      
+    - name: Upload App Bundle artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: expense-tracker-aab
+        path: build/app/outputs/bundle/release/*.aab
+        retention-days: 30
+
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [build-apk, build-appbundle]
+    if: github.event_name == 'release'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download APK artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: expense-tracker-apk
+        path: ./artifacts/apk/
+        
+    - name: Download App Bundle artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: expense-tracker-aab
+        path: ./artifacts/aab/
+        
+    - name: Get release info
+      id: release_info
+      run: |
+        echo "tag_name=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+        echo "release_name=${{ github.event.release.name }}" >> $GITHUB_OUTPUT
+        
+    - name: Upload Release Assets
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.release_info.outputs.tag_name }}
+        name: ${{ steps.release_info.outputs.release_name }}
+        files: |
+          ./artifacts/apk/*.apk
+          ./artifacts/aab/*.aab
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-to-firebase:
+    name: Deploy to Firebase App Distribution
+    runs-on: ubuntu-latest
+    needs: build-apk
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download APK artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: expense-tracker-apk
+        path: ./artifacts/
+        
+    - name: Deploy to Firebase App Distribution
+      uses: wzieba/Firebase-Distribution-Github-Action@v1
+      with:
+        appId: ${{ secrets.FIREBASE_APP_ID }}
+        serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        groups: testers
+        file: ./artifacts/app-release.apk
+        releaseNotes: |
+          Build ${{ github.run_number }}
+          Commit: ${{ github.sha }}
+          Branch: ${{ github.ref_name }}

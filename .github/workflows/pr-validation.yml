@@ -1,0 +1,89 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    types: [ opened, synchronize, reopened ]
+
+env:
+  FLUTTER_VERSION: '3.24.0'
+
+jobs:
+  validate:
+    name: Validate Pull Request
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Generate code
+      run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      
+    - name: Check formatting
+      run: dart format --set-exit-if-changed .
+      
+    - name: Analyze code
+      run: flutter analyze --fatal-infos
+      
+    - name: Run tests
+      run: flutter test --coverage --reporter=github
+      
+    - name: Check build (Debug APK)
+      run: |
+        echo "NEWS_API_KEY=test_key" > .env
+        echo "FIREBASE_API_KEY=test_key" >> .env
+        flutter build apk --debug --build-name=pr-${{ github.event.number }} --build-number=${{ github.run_number }}
+        
+    - name: Comment PR with build status
+      uses: actions/github-script@v7
+      if: always()
+      with:
+        script: |
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          const botComment = comments.find(comment => 
+            comment.user.type === 'Bot' && comment.body.includes('Build Status')
+          );
+          
+          const status = '${{ job.status }}' === 'success' ? '✅ Passed' : '❌ Failed';
+          const body = `## Build Status: ${status}
+          
+          **PR #${{ github.event.number }}** - Build validation completed
+          
+          - **Formatting**: ${status}
+          - **Analysis**: ${status}  
+          - **Tests**: ${status}
+          - **Build**: ${status}
+          
+          Run ID: ${{ github.run_id }}
+          Commit: ${{ github.sha }}`;
+          
+          if (botComment) {
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: botComment.id,
+              body: body
+            });
+          } else {
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
+          }

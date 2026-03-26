@@ -6,10 +6,9 @@ import '../../../../core/utils/currency_formatter.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../../domain/entities/expense.dart';
 import '../providers/expense_provider.dart';
-import '../widgets/category_pie_chart.dart';
+import '../widgets/category_tracker_chart.dart';
 import '../widgets/modern_expense_card.dart';
 import '../widgets/stats_card.dart';
-import '../widgets/gradient_container.dart';
 import '../widgets/welcome_card.dart';
 import 'expense_details_screen.dart';
 import 'add_expense_screen.dart';
@@ -470,7 +469,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             
             const SizedBox(height: 24),
           
-            CategoryPieChart(expenses: monthlyExpenses),
+            // Compact category tracker for dashboard
+            SlideInAnimation.fromBottom(
+              delay: const Duration(milliseconds: 200),
+              child: CompactCategoryTracker(
+                expenses: monthlyExpenses,
+                maxCategories: 4,
+              ),
+            ),
           ],
         ),
       ),

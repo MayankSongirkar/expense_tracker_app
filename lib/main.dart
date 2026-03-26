@@ -17,10 +17,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'firebase_options.dart';
 import 'core/di/injection_container.dart';
 import 'core/services/crashlytics_service.dart';
 import 'core/services/analytics_service.dart';
+import 'core/services/cache_service.dart';
 import 'core/theme/app_theme.dart';
 import 'features/expenses/data/models/expense_model.dart';
 import 'features/expenses/data/models/monthly_archive_model.dart';
@@ -33,13 +35,18 @@ import 'features/onboarding/presentation/screens/onboarding_screen.dart';
 /// 
 /// Initializes all required services and dependencies before starting the app:
 /// - Flutter widget binding
+/// - Environment variables (.env file)
 /// - Firebase core services and Crashlytics
 /// - Hive database with adapters
+/// - Cache service for news data
 /// - Dependency injection container
 /// - Riverpod provider scope
 void main() async {
   // Ensure Flutter framework is initialized before async operations
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Load environment variables from .env file
+  await dotenv.load(fileName: '.env');
   
   // Initialize Firebase core services
   await Firebase.initializeApp(
@@ -51,6 +58,9 @@ void main() async {
   
   // Initialize Analytics service
   await AnalyticsService.initialize();
+  
+  // Initialize cache service for news data
+  CacheService.instance.initialize();
   
   // Set up global error handlers for crash reporting
   FlutterError.onError = (errorDetails) {

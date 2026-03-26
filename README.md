@@ -262,6 +262,70 @@ Your Smart Expense Tracker now meets **premium app standards** and ranks among t
 - Android Studio / VS Code with Flutter extensions
 - Git for version control
 
+## 🔄 CI/CD Pipeline
+
+This project includes a comprehensive CI/CD pipeline using GitHub Actions for automated building, testing, and deployment.
+
+### 🛠 Pipeline Features
+
+- **Automated Testing**: Runs tests, code analysis, and formatting checks on every PR
+- **APK Building**: Automatically builds debug/release APKs based on branch
+- **App Bundle Creation**: Generates AAB files for Google Play Store deployment
+- **GitHub Releases**: Creates releases with downloadable APK and AAB files
+- **Firebase Distribution**: Deploys APKs to Firebase App Distribution for testing
+- **Security Scanning**: Automated vulnerability and dependency checks
+- **Manual Releases**: Workflow dispatch for creating tagged releases with version bumping
+
+### 🚀 Quick Build Commands
+
+Use the included build script for local development:
+
+```bash
+# Quick debug build
+./scripts/build.sh debug
+
+# Production build with all checks
+./scripts/build.sh release
+
+# Run full CI pipeline locally
+./scripts/build.sh ci
+
+# Build App Bundle for Play Store
+./scripts/build.sh bundle
+
+# Run tests with coverage
+./scripts/build.sh test
+```
+
+### 📦 Automated Releases
+
+**Create a release automatically:**
+1. Go to Actions → "Build and Release APK"
+2. Click "Run workflow"
+3. Select release type (patch/minor/major)
+4. Add release notes
+5. The pipeline will:
+   - Bump version in `pubspec.yaml`
+   - Build APK and AAB files
+   - Create GitHub release with assets
+   - Commit version changes
+
+**Release on tag push:**
+```bash
+git tag v1.2.3
+git push origin v1.2.3
+```
+
+### 🔧 Required Secrets
+
+Add these secrets in your GitHub repository settings:
+- `NEWS_API_KEY`: Your news API key
+- `FIREBASE_API_KEY`: Firebase API key
+- `FIREBASE_APP_ID`: Firebase App ID for distribution
+- `FIREBASE_SERVICE_ACCOUNT`: Firebase service account JSON
+
+For detailed CI/CD documentation, see [`.github/README.md`](.github/README.md).
+
 ### Installation
 
 1. **Clone the repository**
