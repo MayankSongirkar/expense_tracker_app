@@ -1,27 +1,27 @@
-/// Live Finance News Screen
-/// 
-/// Presentation layer screen for displaying financial news articles with
-/// four different categories: Latest, Crypto, Market, and Sources.
-/// This screen provides a comprehensive news reading experience with
-/// tabbed navigation, search functionality, and caching.
-/// 
-/// Key Features:
-/// - Four news categories with dedicated tabs
-/// - Real-time financial news from NewsData.io API
-/// - Search functionality with query validation
-/// - Pull-to-refresh for latest updates
-/// - Professional Material 3 design
-/// - Error handling with retry options
-/// - Analytics tracking for user interactions
-/// - Automatic caching for improved performance
-/// 
-/// Usage:
-/// ```dart
-/// Navigator.push(
-///   context,
-///   MaterialPageRoute(builder: (context) => const NewsScreen()),
-/// );
-/// ```
+// Live Finance News Screen
+// 
+// Presentation layer screen for displaying financial news articles with
+// four different categories: Latest, Crypto, Market, and Sources.
+// This screen provides a comprehensive news reading experience with
+// tabbed navigation, search functionality, and caching.
+// 
+// Key Features:
+// - Four news categories with dedicated tabs
+// - Real-time financial news from NewsData.io API
+// - Search functionality with query validation
+// - Pull-to-refresh for latest updates
+// - Professional Material 3 design
+// - Error handling with retry options
+// - Analytics tracking for user interactions
+// - Automatic caching for improved performance
+// 
+// Usage:
+// ```dart
+// Navigator.push(
+//   context,
+//   MaterialPageRoute(builder: (context) => const NewsScreen()),
+// );
+// ```
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -361,7 +361,7 @@ class _NewsScreenState extends ConsumerState<NewsScreen>
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                color: AppTheme.primaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
@@ -384,8 +384,8 @@ class _NewsScreenState extends ConsumerState<NewsScreen>
       elevation: 0,
       scrolledUnderElevation: 1,
       backgroundColor: isDark 
-          ? const Color(0xFF0A0A0A).withValues(alpha: 0.95)
-          : const Color(0xFFF8FAFC).withValues(alpha: 0.95),
+          ? const Color(0xFF0A0A0A).withOpacity(0.95)
+          : const Color(0xFFF8FAFC).withOpacity(0.95),
       actions: [
         SlideInAnimation.fromRight(
           delay: const Duration(milliseconds: 200),
@@ -394,7 +394,7 @@ class _NewsScreenState extends ConsumerState<NewsScreen>
             icon: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                color: AppTheme.primaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
@@ -423,8 +423,8 @@ class _NewsScreenState extends ConsumerState<NewsScreen>
         boxShadow: [
           BoxShadow(
             color: isDark 
-                ? Colors.black.withValues(alpha: 0.3)
-                : Colors.black.withValues(alpha: 0.1),
+                ? Colors.black.withOpacity(0.3)
+                : Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -440,10 +440,10 @@ class _NewsScreenState extends ConsumerState<NewsScreen>
         }).toList(),
         labelColor: AppTheme.primaryColor,
         unselectedLabelColor: isDark 
-            ? Colors.white.withValues(alpha: 0.6)
-            : Colors.black.withValues(alpha: 0.6),
+            ? Colors.white.withOpacity(0.6)
+            : Colors.black.withOpacity(0.6),
         indicator: BoxDecoration(
-          color: AppTheme.primaryColor.withValues(alpha: 0.1),
+          color: AppTheme.primaryColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         indicatorSize: TabBarIndicatorSize.tab,
@@ -531,7 +531,7 @@ class _NewsScreenState extends ConsumerState<NewsScreen>
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                color: AppTheme.primaryColor.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -556,8 +556,8 @@ class _NewsScreenState extends ConsumerState<NewsScreen>
               style: TextStyle(
                 fontSize: 14,
                 color: isDark 
-                    ? Colors.white.withValues(alpha: 0.7)
-                    : Colors.black.withValues(alpha: 0.6),
+                    ? Colors.white.withOpacity(0.7)
+                    : Colors.black.withOpacity(0.6),
               ),
             ),
             const SizedBox(height: 24),

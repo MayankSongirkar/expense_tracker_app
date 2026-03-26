@@ -1,29 +1,29 @@
-/// PDF Receipt Generator Utility
-/// 
-/// A comprehensive utility class for generating professional PDF receipts
-/// for expense records. Provides formatted, printable receipts with
-/// Indian currency formatting and numbering system support.
-/// 
-/// Key Features:
-/// - Professional receipt layout with headers and footers
-/// - Indian Rupee formatting with Lakh/Crore notation
-/// - Amount in words conversion (Indian numbering system)
-/// - Proper PDF structure with sections and styling
-/// - Device storage integration for saving receipts
-/// - Timestamp and metadata inclusion
-/// 
-/// Technical Implementation:
-/// - Uses pdf package for document generation
-/// - Supports A4 page format for standard printing
-/// - Includes proper styling with colors and borders
-/// - Handles edge cases for amount conversion
-/// - Provides clean, readable receipt format
-/// 
-/// Usage:
-/// ```dart
-/// final pdfBytes = await PdfGenerator.generateExpenseReceipt(expense);
-/// final filePath = await PdfGenerator.savePdfToDevice(pdfBytes, 'receipt.pdf');
-/// ```
+// PDF Receipt Generator Utility
+// 
+// A comprehensive utility class for generating professional PDF receipts
+// for expense records. Provides formatted, printable receipts with
+// Indian currency formatting and numbering system support.
+// 
+// Key Features:
+// - Professional receipt layout with headers and footers
+// - Indian Rupee formatting with Lakh/Crore notation
+// - Amount in words conversion (Indian numbering system)
+// - Proper PDF structure with sections and styling
+// - Device storage integration for saving receipts
+// - Timestamp and metadata inclusion
+// 
+// Technical Implementation:
+// - Uses pdf package for document generation
+// - Supports A4 page format for standard printing
+// - Includes proper styling with colors and borders
+// - Handles edge cases for amount conversion
+// - Provides clean, readable receipt format
+// 
+// Usage:
+// ```dart
+// final pdfBytes = await PdfGenerator.generateExpenseReceipt(expense);
+// final filePath = await PdfGenerator.savePdfToDevice(pdfBytes, 'receipt.pdf');
+// ```
 
 import 'dart:io';
 import 'dart:typed_data';
@@ -387,7 +387,7 @@ class PdfGenerator {
   /// Example:
   /// ```dart
   /// final filePath = await PdfGenerator.savePdfToDevice(pdfBytes, 'expense_receipt.pdf');
-  /// print('PDF saved to: $filePath');
+  /// debugPrint('PDF saved to: $filePath');
   /// ```
   static Future<String> savePdfToDevice(Uint8List pdfBytes, String fileName) async {
     final directory = await getApplicationDocumentsDirectory();

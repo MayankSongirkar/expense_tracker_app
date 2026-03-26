@@ -1,15 +1,15 @@
-/// Animated Floating Action Button
-/// 
-/// A professional floating action button with smooth animations, micro-interactions,
-/// and enhanced visual feedback. Designed for Google Play Store quality standards.
-/// 
-/// Features:
-/// - Smooth scale animations on press
-/// - Gradient backgrounds with shadows
-/// - Pulse animation for attention
-/// - Hero animation support
-/// - Accessibility compliance
-/// - Material 3 design principles
+// Animated Floating Action Button
+// 
+// A professional floating action button with smooth animations, micro-interactions,
+// and enhanced visual feedback. Designed for Google Play Store quality standards.
+// 
+// Features:
+// - Smooth scale animations on press
+// - Gradient backgrounds with shadows
+// - Pulse animation for attention
+// - Hero animation support
+// - Accessibility compliance
+// - Material 3 design principles
 
 import 'package:flutter/material.dart';
 import '../animations/app_animations.dart';

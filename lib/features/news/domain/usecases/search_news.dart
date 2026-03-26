@@ -1,26 +1,26 @@
-/// Search News Use Case
-/// 
-/// Domain layer use case for searching news articles based on user queries.
-/// This use case handles the business logic for news search functionality
-/// with proper validation and filtering.
-/// 
-/// Key Responsibilities:
-/// - Validate search queries
-/// - Execute search through repository
-/// - Apply business rules to results
-/// - Handle search-specific errors
-/// 
-/// Business Rules:
-/// - Minimum query length of 2 characters
-/// - Filter inappropriate content
-/// - Sort by relevance and date
-/// - Limit results for performance
-/// 
-/// Usage:
-/// ```dart
-/// final searchNews = SearchNews(newsRepository);
-/// final results = await searchNews('cryptocurrency market');
-/// ```
+// Search News Use Case
+// 
+// Domain layer use case for searching news articles based on user queries.
+// This use case handles the business logic for news search functionality
+// with proper validation and filtering.
+// 
+// Key Responsibilities:
+// - Validate search queries
+// - Execute search through repository
+// - Apply business rules to results
+// - Handle search-specific errors
+// 
+// Business Rules:
+// - Minimum query length of 2 characters
+// - Filter inappropriate content
+// - Sort by relevance and date
+// - Limit results for performance
+// 
+// Usage:
+// ```dart
+// final searchNews = SearchNews(newsRepository);
+// final results = await searchNews('cryptocurrency market');
+// ```
 
 import '../entities/news_article.dart';
 import '../repositories/news_repository.dart';
@@ -57,9 +57,9 @@ class SearchNews {
   /// ```dart
   /// try {
   ///   final results = await searchNews('bitcoin price analysis');
-  ///   print('Found ${results.length} articles');
+  ///   debugPrint('Found ${results.length} articles');
   /// } catch (e) {
-  ///   print('Search failed: $e');
+  ///   debugPrint('Search failed: $e');
   /// }
   /// ```
   Future<List<NewsArticle>> call(String query) async {

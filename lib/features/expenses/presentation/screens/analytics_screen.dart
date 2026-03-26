@@ -1,23 +1,23 @@
-/// Analytics Screen - Expense Insights and Visualizations
-/// 
-/// Provides comprehensive analytics and insights for user expenses including:
-/// - Overview statistics (total spending, monthly average)
-/// - Monthly spending trends with interactive charts
-/// - Category-wise expense breakdown with pie charts
-/// - Professional UI with gradient backgrounds and modern cards
-/// 
-/// Key Features:
-/// - Real-time data from Riverpod state management
-/// - Responsive design with proper loading and empty states
-/// - Material 3 design with consistent theming
-/// - Interactive charts using FL Chart library
-/// - Proper error handling and user feedback
-/// 
-/// Architecture:
-/// - ConsumerWidget for reactive state management
-/// - Modular widget composition for maintainability
-/// - Clean separation of UI and business logic
-/// - Reusable components for consistent design
+// Analytics Screen - Expense Insights and Visualizations
+// 
+// Provides comprehensive analytics and insights for user expenses including:
+// - Overview statistics (total spending, monthly average)
+// - Monthly spending trends with interactive charts
+// - Category-wise expense breakdown with pie charts
+// - Professional UI with gradient backgrounds and modern cards
+// 
+// Key Features:
+// - Real-time data from Riverpod state management
+// - Responsive design with proper loading and empty states
+// - Material 3 design with consistent theming
+// - Interactive charts using FL Chart library
+// - Proper error handling and user feedback
+// 
+// Architecture:
+// - ConsumerWidget for reactive state management
+// - Modular widget composition for maintainability
+// - Clean separation of UI and business logic
+// - Reusable components for consistent design
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -147,7 +147,7 @@ class AnalyticsScreen extends ConsumerWidget {
         Expanded(
           child: StatsCard(
             title: 'Total Spending',
-            value: totalSpending == 0 ? '0' : totalSpending.toStringAsFixed(0),
+            initialValue: totalSpending == 0 ? '0' : totalSpending.toStringAsFixed(0),
             icon: Icons.account_balance_wallet_rounded,
             color: AppTheme.primaryColor,
             isAmount: true,
@@ -157,7 +157,7 @@ class AnalyticsScreen extends ConsumerWidget {
         Expanded(
           child: StatsCard(
             title: 'Monthly Average',
-            value: avgMonthly == 0 ? '0' : avgMonthly.toStringAsFixed(0),
+            initialValue: avgMonthly == 0 ? '0' : avgMonthly.toStringAsFixed(0),
             icon: Icons.trending_up_rounded,
             color: AppTheme.secondaryColor,
             isAmount: true,

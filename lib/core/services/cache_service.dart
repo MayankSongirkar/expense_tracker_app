@@ -1,27 +1,27 @@
-/// Cache Service
-/// 
-/// Core service for managing application-wide caching functionality.
-/// Provides in-memory and persistent caching capabilities with automatic
-/// expiration and cleanup mechanisms.
-/// 
-/// Key Features:
-/// - In-memory caching with TTL (Time To Live)
-/// - Automatic cache expiration
-/// - Memory management and cleanup
-/// - Type-safe cache operations
-/// - Cache statistics and monitoring
-/// 
-/// Usage:
-/// ```dart
-/// // Cache data
-/// CacheService.instance.set('key', data, duration: Duration(hours: 1));
-/// 
-/// // Retrieve data
-/// final cachedData = CacheService.instance.get<MyDataType>('key');
-/// 
-/// // Check if cached
-/// final isValid = CacheService.instance.isValid('key');
-/// ```
+// Cache Service
+// 
+// Core service for managing application-wide caching functionality.
+// Provides in-memory and persistent caching capabilities with automatic
+// expiration and cleanup mechanisms.
+// 
+// Key Features:
+// - In-memory caching with TTL (Time To Live)
+// - Automatic cache expiration
+// - Memory management and cleanup
+// - Type-safe cache operations
+// - Cache statistics and monitoring
+// 
+// Usage:
+// ```dart
+// // Cache data
+// CacheService.instance.set('key', data, duration: Duration(hours: 1));
+// 
+// // Retrieve data
+// final cachedData = CacheService.instance.get<MyDataType>('key');
+// 
+// // Check if cached
+// final isValid = CacheService.instance.isValid('key');
+// ```
 
 import 'dart:async';
 import 'package:flutter/foundation.dart';
@@ -88,7 +88,7 @@ class CacheService {
     _cleanupTimer = Timer.periodic(cleanupInterval, (_) => _cleanup());
     
     if (kDebugMode) {
-      print('CacheService initialized');
+      debugPrint('CacheService initialized');
     }
   }
   
@@ -98,7 +98,7 @@ class CacheService {
     _cache.clear();
     
     if (kDebugMode) {
-      print('CacheService disposed');
+      debugPrint('CacheService disposed');
     }
   }
   
@@ -117,7 +117,7 @@ class CacheService {
     _cache[key] = entry;
     
     if (kDebugMode) {
-      print('Cached data for key: $key (expires in ${entry.duration})');
+      debugPrint('Cached data for key: $key (expires in ${entry.duration})');
     }
   }
   
@@ -132,13 +132,13 @@ class CacheService {
     if (!entry.isValid) {
       _cache.remove(key);
       if (kDebugMode) {
-        print('Cache expired for key: $key');
+        debugPrint('Cache expired for key: $key');
       }
       return null;
     }
     
     if (kDebugMode) {
-      print('Cache hit for key: $key (expires in ${entry.remainingTime})');
+      debugPrint('Cache hit for key: $key (expires in ${entry.remainingTime})');
     }
     
     return entry.data as T?;
@@ -155,7 +155,7 @@ class CacheService {
     _cache.remove(key);
     
     if (kDebugMode) {
-      print('Removed cache for key: $key');
+      debugPrint('Removed cache for key: $key');
     }
   }
   
@@ -165,7 +165,7 @@ class CacheService {
     _cache.clear();
     
     if (kDebugMode) {
-      print('Cleared $count cache entries');
+      debugPrint('Cleared $count cache entries');
     }
   }
   
@@ -208,7 +208,7 @@ class CacheService {
     }
     
     if (kDebugMode && keysToRemove.isNotEmpty) {
-      print('Cleaned up ${keysToRemove.length} expired cache entries');
+      debugPrint('Cleaned up ${keysToRemove.length} expired cache entries');
     }
   }
 }

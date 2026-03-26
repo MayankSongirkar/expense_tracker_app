@@ -63,10 +63,10 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 margin: const EdgeInsets.only(right: 16),
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+                    color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                   ),
                 ),
                 child: Icon(
@@ -83,7 +83,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         ],
         elevation: 0,
         scrolledUnderElevation: 1,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.95),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
       ),
       body: IndexedStack(
         index: _currentIndex,
@@ -184,13 +184,13 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         height: 85,
         decoration: BoxDecoration(
           color: isDark 
-              ? const Color(0xFF1E1E1E).withValues(alpha: 0.95)
-              : Colors.white.withValues(alpha: 0.95),
+              ? const Color(0xFF1E1E1E).withOpacity(0.95)
+              : Colors.white.withOpacity(0.95),
           boxShadow: [
             BoxShadow(
               color: isDark 
-                  ? Colors.black.withValues(alpha: 0.3)
-                  : Colors.black.withValues(alpha: 0.1),
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.black.withOpacity(0.1),
               blurRadius: 20,
               offset: const Offset(0, -8),
               spreadRadius: 0,
@@ -282,7 +282,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? AppTheme.primaryColor.withValues(alpha: 0.15)
+                        ? AppTheme.primaryColor.withOpacity(0.15)
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -301,8 +301,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                       color: isSelected
                           ? AppTheme.primaryColor
                           : isDark
-                              ? Colors.white.withValues(alpha: 0.7)
-                              : Colors.black.withValues(alpha: 0.6),
+                              ? Colors.white.withOpacity(0.7)
+                              : Colors.black.withOpacity(0.6),
                     ),
                   ),
                 ),
@@ -319,8 +319,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     color: isSelected
                         ? AppTheme.primaryColor
                         : isDark
-                            ? Colors.white.withValues(alpha: 0.7)
-                            : Colors.black.withValues(alpha: 0.6),
+                            ? Colors.white.withOpacity(0.7)
+                            : Colors.black.withOpacity(0.6),
                     letterSpacing: 0.5,
                   ),
                   child: Text(

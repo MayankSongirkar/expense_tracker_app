@@ -1,22 +1,22 @@
-/// Monthly Archive Model for Expense History
-/// 
-/// Stores archived expenses for each month to enable monthly reset functionality
-/// while preserving historical data for analytics and reporting. Also tracks
-/// yearly totals for comprehensive expense analysis.
-/// 
-/// Key Features:
-/// - Monthly grouping of expenses with reset capability
-/// - Yearly total tracking and aggregation
-/// - Efficient storage and retrieval by month/year
-/// - Maintains expense history for analytics
-/// - Supports monthly reset workflow
-/// - Category-wise breakdown for detailed analysis
-/// 
-/// Architecture:
-/// - Uses Hive for local persistence
-/// - Separate storage from current expenses
-/// - Indexed by year-month for fast access
-/// - Yearly summaries for long-term trends
+// Monthly Archive Model for Expense History
+// 
+// Stores archived expenses for each month to enable monthly reset functionality
+// while preserving historical data for analytics and reporting. Also tracks
+// yearly totals for comprehensive expense analysis.
+// 
+// Key Features:
+// - Monthly grouping of expenses with reset capability
+// - Yearly total tracking and aggregation
+// - Efficient storage and retrieval by month/year
+// - Maintains expense history for analytics
+// - Supports monthly reset workflow
+// - Category-wise breakdown for detailed analysis
+// 
+// Architecture:
+// - Uses Hive for local persistence
+// - Separate storage from current expenses
+// - Indexed by year-month for fast access
+// - Yearly summaries for long-term trends
 
 import 'package:hive/hive.dart';
 import '../../domain/entities/expense.dart';

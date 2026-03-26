@@ -1,21 +1,21 @@
-/// Expense Archive Repository Interface
-/// 
-/// Defines the contract for expense archive operations in the domain layer.
-/// Provides methods for monthly reset functionality, historical data access,
-/// and yearly summary management following Clean Architecture principles.
-/// 
-/// Key Responsibilities:
-/// - Monthly expense archiving and reset operations
-/// - Historical data retrieval for analytics
-/// - Yearly summary management and calculation
-/// - Data integrity and consistency enforcement
-/// - Archive lifecycle management
-/// 
-/// Architecture:
-/// - Domain layer interface (framework-agnostic)
-/// - Implemented by data layer concrete classes
-/// - Used by use cases for business logic
-/// - Supports dependency inversion principle
+// Expense Archive Repository Interface
+// 
+// Defines the contract for expense archive operations in the domain layer.
+// Provides methods for monthly reset functionality, historical data access,
+// and yearly summary management following Clean Architecture principles.
+// 
+// Key Responsibilities:
+// - Monthly expense archiving and reset operations
+// - Historical data retrieval for analytics
+// - Yearly summary management and calculation
+// - Data integrity and consistency enforcement
+// - Archive lifecycle management
+// 
+// Architecture:
+// - Domain layer interface (framework-agnostic)
+// - Implemented by data layer concrete classes
+// - Used by use cases for business logic
+// - Supports dependency inversion principle
 
 import '../entities/expense.dart';
 import '../entities/monthly_archive.dart';

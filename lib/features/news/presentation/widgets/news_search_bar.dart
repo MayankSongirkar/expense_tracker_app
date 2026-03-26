@@ -1,24 +1,24 @@
-/// News Search Bar Widget
-/// 
-/// A professional search bar widget for news articles with modern
-/// Material 3 design, animations, and comprehensive functionality.
-/// 
-/// Key Features:
-/// - Material 3 design with animations
-/// - Search suggestions and validation
-/// - Clear functionality with animations
-/// - Keyboard handling and focus management
-/// - Accessibility support
-/// 
-/// Usage:
-/// ```dart
-/// NewsSearchBar(
-///   controller: searchController,
-///   focusNode: searchFocusNode,
-///   onSubmitted: (query) => performSearch(query),
-///   onCleared: () => clearSearch(),
-/// )
-/// ```
+// News Search Bar Widget
+// 
+// A professional search bar widget for news articles with modern
+// Material 3 design, animations, and comprehensive functionality.
+// 
+// Key Features:
+// - Material 3 design with animations
+// - Search suggestions and validation
+// - Clear functionality with animations
+// - Keyboard handling and focus management
+// - Accessibility support
+// 
+// Usage:
+// ```dart
+// NewsSearchBar(
+//   controller: searchController,
+//   focusNode: searchFocusNode,
+//   onSubmitted: (query) => performSearch(query),
+//   onCleared: () => clearSearch(),
+// )
+// ```
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -165,24 +165,24 @@ class _NewsSearchBarState extends State<NewsSearchBar>
             child: Container(
               decoration: BoxDecoration(
                 color: isDark 
-                    ? const Color(0xFF1E1E1E).withValues(alpha: 0.9)
-                    : Colors.white.withValues(alpha: 0.9),
+                    ? const Color(0xFF1E1E1E).withOpacity(0.9)
+                    : Colors.white.withOpacity(0.9),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: _isFocused 
                       ? AppTheme.primaryColor
                       : isDark 
-                          ? Colors.white.withValues(alpha: 0.1)
-                          : Colors.black.withValues(alpha: 0.1),
+                          ? Colors.white.withOpacity(0.1)
+                          : Colors.black.withOpacity(0.1),
                   width: _isFocused ? 2 : 1,
                 ),
                 boxShadow: [
                   BoxShadow(
                     color: _isFocused 
-                        ? AppTheme.primaryColor.withValues(alpha: 0.2)
+                        ? AppTheme.primaryColor.withOpacity(0.2)
                         : isDark 
-                            ? Colors.black.withValues(alpha: 0.3)
-                            : Colors.black.withValues(alpha: 0.1),
+                            ? Colors.black.withOpacity(0.3)
+                            : Colors.black.withOpacity(0.1),
                     blurRadius: _isFocused ? 16 : 8,
                     offset: const Offset(0, 4),
                     spreadRadius: _isFocused ? 2 : 0,
@@ -212,8 +212,8 @@ class _NewsSearchBarState extends State<NewsSearchBar>
         hintText: widget.placeholder,
         hintStyle: TextStyle(
           color: isDark 
-              ? Colors.white.withValues(alpha: 0.6)
-              : Colors.black.withValues(alpha: 0.6),
+              ? Colors.white.withOpacity(0.6)
+              : Colors.black.withOpacity(0.6),
           fontSize: 16,
         ),
         prefixIcon: _buildPrefixIcon(isDark),
@@ -236,7 +236,7 @@ class _NewsSearchBarState extends State<NewsSearchBar>
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: _isFocused 
-              ? AppTheme.primaryColor.withValues(alpha: 0.1)
+              ? AppTheme.primaryColor.withOpacity(0.1)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
         ),
@@ -245,8 +245,8 @@ class _NewsSearchBarState extends State<NewsSearchBar>
           color: _isFocused 
               ? AppTheme.primaryColor
               : isDark 
-                  ? Colors.white.withValues(alpha: 0.7)
-                  : Colors.black.withValues(alpha: 0.7),
+                  ? Colors.white.withOpacity(0.7)
+                  : Colors.black.withOpacity(0.7),
           size: 20,
         ),
       ),
@@ -277,16 +277,16 @@ class _NewsSearchBarState extends State<NewsSearchBar>
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: isDark 
-                  ? Colors.white.withValues(alpha: 0.1)
-                  : Colors.black.withValues(alpha: 0.1),
+                  ? Colors.white.withOpacity(0.1)
+                  : Colors.black.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.close_rounded,
               size: 16,
               color: isDark 
-                  ? Colors.white.withValues(alpha: 0.8)
-                  : Colors.black.withValues(alpha: 0.8),
+                  ? Colors.white.withOpacity(0.8)
+                  : Colors.black.withOpacity(0.8),
             ),
           ),
           tooltip: 'Clear search',
@@ -338,19 +338,19 @@ class NewsSearchSuggestions extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: isDark 
-            ? const Color(0xFF1E1E1E).withValues(alpha: 0.9)
-            : Colors.white.withValues(alpha: 0.9),
+            ? const Color(0xFF1E1E1E).withOpacity(0.9)
+            : Colors.white.withOpacity(0.9),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isDark 
-              ? Colors.white.withValues(alpha: 0.1)
-              : Colors.black.withValues(alpha: 0.1),
+              ? Colors.white.withOpacity(0.1)
+              : Colors.black.withOpacity(0.1),
         ),
         boxShadow: [
           BoxShadow(
             color: isDark 
-                ? Colors.black.withValues(alpha: 0.3)
-                : Colors.black.withValues(alpha: 0.1),
+                ? Colors.black.withOpacity(0.3)
+                : Colors.black.withOpacity(0.1),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -384,8 +384,8 @@ class NewsSearchSuggestions extends StatelessWidget {
         fontSize: 14,
         fontWeight: FontWeight.w600,
         color: isDark 
-            ? Colors.white.withValues(alpha: 0.8)
-            : Colors.black.withValues(alpha: 0.8),
+            ? Colors.white.withOpacity(0.8)
+            : Colors.black.withOpacity(0.8),
       ),
     );
   }
@@ -412,14 +412,14 @@ class NewsSearchSuggestions extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: isRecent 
-                    ? AppTheme.primaryColor.withValues(alpha: 0.1)
+                    ? AppTheme.primaryColor.withOpacity(0.1)
                     : isDark 
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.black.withValues(alpha: 0.05),
+                        ? Colors.white.withOpacity(0.1)
+                        : Colors.black.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: isRecent 
-                      ? AppTheme.primaryColor.withValues(alpha: 0.3)
+                      ? AppTheme.primaryColor.withOpacity(0.3)
                       : Colors.transparent,
                 ),
               ),
@@ -442,8 +442,8 @@ class NewsSearchSuggestions extends StatelessWidget {
                       color: isRecent 
                           ? AppTheme.primaryColor
                           : isDark 
-                              ? Colors.white.withValues(alpha: 0.8)
-                              : Colors.black.withValues(alpha: 0.8),
+                              ? Colors.white.withOpacity(0.8)
+                              : Colors.black.withOpacity(0.8),
                     ),
                   ),
                 ],

@@ -1,20 +1,20 @@
-/// Yearly Summary Model for Annual Expense Tracking
-/// 
-/// Aggregates and stores yearly expense data for comprehensive annual analysis.
-/// Provides yearly totals, category breakdowns, and trend analysis capabilities.
-/// 
-/// Key Features:
-/// - Annual expense aggregation from monthly archives
-/// - Category-wise yearly breakdown
-/// - Monthly distribution within the year
-/// - Year-over-year comparison support
-/// - Efficient yearly analytics and reporting
-/// 
-/// Architecture:
-/// - Uses Hive for local persistence
-/// - Automatically updated when monthly archives are created
-/// - Indexed by year for fast access
-/// - Supports multi-year trend analysis
+// Yearly Summary Model for Annual Expense Tracking
+// 
+// Aggregates and stores yearly expense data for comprehensive annual analysis.
+// Provides yearly totals, category breakdowns, and trend analysis capabilities.
+// 
+// Key Features:
+// - Annual expense aggregation from monthly archives
+// - Category-wise yearly breakdown
+// - Monthly distribution within the year
+// - Year-over-year comparison support
+// - Efficient yearly analytics and reporting
+// 
+// Architecture:
+// - Uses Hive for local persistence
+// - Automatically updated when monthly archives are created
+// - Indexed by year for fast access
+// - Supports multi-year trend analysis
 
 import 'package:hive/hive.dart';
 import 'monthly_archive_model.dart';

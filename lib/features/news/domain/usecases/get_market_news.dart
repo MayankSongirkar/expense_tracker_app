@@ -1,26 +1,26 @@
-/// Get Market News Use Case
-/// 
-/// Domain layer use case for fetching market and finance news articles.
-/// This use case encapsulates the business logic for retrieving
-/// and processing market-related news data.
-/// 
-/// Key Responsibilities:
-/// - Fetch market news from repository with caching
-/// - Apply business rules and validation
-/// - Handle errors and edge cases
-/// - Return processed market articles
-/// 
-/// Business Rules:
-/// - Filter out articles without titles
-/// - Sort by publication date (newest first)
-/// - Validate article URLs
-/// - Focus on market and finance content
-/// 
-/// Usage:
-/// ```dart
-/// final getMarketNews = GetMarketNews(newsRepository);
-/// final articles = await getMarketNews(forceRefresh: true);
-/// ```
+// Get Market News Use Case
+// 
+// Domain layer use case for fetching market and finance news articles.
+// This use case encapsulates the business logic for retrieving
+// and processing market-related news data.
+// 
+// Key Responsibilities:
+// - Fetch market news from repository with caching
+// - Apply business rules and validation
+// - Handle errors and edge cases
+// - Return processed market articles
+// 
+// Business Rules:
+// - Filter out articles without titles
+// - Sort by publication date (newest first)
+// - Validate article URLs
+// - Focus on market and finance content
+// 
+// Usage:
+// ```dart
+// final getMarketNews = GetMarketNews(newsRepository);
+// final articles = await getMarketNews(forceRefresh: true);
+// ```
 
 import '../entities/news_article.dart';
 import '../repositories/news_repository.dart';
@@ -56,9 +56,9 @@ class GetMarketNews {
   /// ```dart
   /// try {
   ///   final articles = await getMarketNews(forceRefresh: false);
-  ///   print('Successfully fetched ${articles.length} market articles');
+  ///   debugPrint('Successfully fetched ${articles.length} market articles');
   /// } catch (e) {
-  ///   print('Failed to fetch market news: $e');
+  ///   debugPrint('Failed to fetch market news: $e');
   /// }
   /// ```
   Future<List<NewsArticle>> call({

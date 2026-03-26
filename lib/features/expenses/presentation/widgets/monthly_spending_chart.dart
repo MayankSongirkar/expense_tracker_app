@@ -1,28 +1,28 @@
-/// Monthly Spending Chart Widget
-/// 
-/// A professional bar chart component that visualizes monthly spending trends
-/// over the last 12 months. Handles overlapping labels intelligently and
-/// provides interactive tooltips for detailed information.
-/// 
-/// Key Features:
-/// - Displays last 12 months of spending data
-/// - Intelligent label management to prevent overlap
-/// - Interactive tooltips with full month names and amounts
-/// - Responsive design that adapts to data density
-/// - Professional styling with gradients and proper spacing
-/// - Empty state handling for new users
-/// 
-/// Technical Implementation:
-/// - Uses FL Chart library for smooth animations
-/// - Adaptive label rotation and spacing based on data count
-/// - Proper theme integration for light/dark modes
-/// - Currency formatting with Indian Rupee support
-/// - Optimized performance with efficient data processing
-/// 
-/// Usage:
-/// ```dart
-/// MonthlySpendingChart(expenses: expenseList)
-/// ```
+// Monthly Spending Chart Widget
+// 
+// A professional bar chart component that visualizes monthly spending trends
+// over the last 12 months. Handles overlapping labels intelligently and
+// provides interactive tooltips for detailed information.
+// 
+// Key Features:
+// - Displays last 12 months of spending data
+// - Intelligent label management to prevent overlap
+// - Interactive tooltips with full month names and amounts
+// - Responsive design that adapts to data density
+// - Professional styling with gradients and proper spacing
+// - Empty state handling for new users
+// 
+// Technical Implementation:
+// - Uses FL Chart library for smooth animations
+// - Adaptive label rotation and spacing based on data count
+// - Proper theme integration for light/dark modes
+// - Currency formatting with Indian Rupee support
+// - Optimized performance with efficient data processing
+// 
+// Usage:
+// ```dart
+// MonthlySpendingChart(expenses: expenseList)
+// ```
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';

@@ -1,26 +1,26 @@
-/// Get Crypto News Use Case
-/// 
-/// Domain layer use case for fetching cryptocurrency-specific news articles.
-/// This use case encapsulates the business logic for retrieving
-/// and processing crypto-related news data.
-/// 
-/// Key Responsibilities:
-/// - Fetch crypto news from repository with caching
-/// - Apply business rules and validation
-/// - Handle errors and edge cases
-/// - Return processed crypto articles
-/// 
-/// Business Rules:
-/// - Filter out articles without titles
-/// - Sort by publication date (newest first)
-/// - Validate article URLs
-/// - Focus on crypto-specific content
-/// 
-/// Usage:
-/// ```dart
-/// final getCryptoNews = GetCryptoNews(newsRepository);
-/// final articles = await getCryptoNews(forceRefresh: true);
-/// ```
+// Get Crypto News Use Case
+// 
+// Domain layer use case for fetching cryptocurrency-specific news articles.
+// This use case encapsulates the business logic for retrieving
+// and processing crypto-related news data.
+// 
+// Key Responsibilities:
+// - Fetch crypto news from repository with caching
+// - Apply business rules and validation
+// - Handle errors and edge cases
+// - Return processed crypto articles
+// 
+// Business Rules:
+// - Filter out articles without titles
+// - Sort by publication date (newest first)
+// - Validate article URLs
+// - Focus on crypto-specific content
+// 
+// Usage:
+// ```dart
+// final getCryptoNews = GetCryptoNews(newsRepository);
+// final articles = await getCryptoNews(forceRefresh: true);
+// ```
 
 import '../entities/news_article.dart';
 import '../repositories/news_repository.dart';
@@ -56,9 +56,9 @@ class GetCryptoNews {
   /// ```dart
   /// try {
   ///   final articles = await getCryptoNews(forceRefresh: false);
-  ///   print('Successfully fetched ${articles.length} crypto articles');
+  ///   debugPrint('Successfully fetched ${articles.length} crypto articles');
   /// } catch (e) {
-  ///   print('Failed to fetch crypto news: $e');
+  ///   debugPrint('Failed to fetch crypto news: $e');
   /// }
   /// ```
   Future<List<NewsArticle>> call({

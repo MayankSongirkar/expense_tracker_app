@@ -1,17 +1,16 @@
-/// Legal Compliance Screen
-/// 
-/// Provides access to Privacy Policy and Terms of Use for legal compliance.
-/// Required for app store publication and regulatory compliance.
-/// 
-/// Key Features:
-/// - Privacy Policy display with proper formatting
-/// - Terms of Use with clear sections
-/// - Easy navigation and readability
-/// - Compliance with app store requirements
-/// - Professional presentation
+// Legal Compliance Screen
+// 
+// Provides access to Privacy Policy and Terms of Use for legal compliance.
+// Required for app store publication and regulatory compliance.
+// 
+// Key Features:
+// - Privacy Policy display with proper formatting
+// - Terms of Use with clear sections
+// - Easy navigation and readability
+// - Compliance with app store requirements
+// - Professional presentation
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 /// Legal compliance screen for Privacy Policy and Terms of Use
 /// 

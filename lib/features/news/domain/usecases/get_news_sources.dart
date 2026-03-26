@@ -1,26 +1,26 @@
-/// Get News Sources Use Case
-/// 
-/// Domain layer use case for fetching news sources information.
-/// This use case encapsulates the business logic for retrieving
-/// and processing news sources data.
-/// 
-/// Key Responsibilities:
-/// - Fetch news sources from repository with caching
-/// - Apply business rules and validation
-/// - Handle errors and edge cases
-/// - Return processed sources information
-/// 
-/// Business Rules:
-/// - Filter out sources without names
-/// - Sort by source reliability and popularity
-/// - Validate source URLs
-/// - Support category and country filtering
-/// 
-/// Usage:
-/// ```dart
-/// final getNewsSources = GetNewsSources(newsRepository);
-/// final sources = await getNewsSources(category: 'business');
-/// ```
+// Get News Sources Use Case
+// 
+// Domain layer use case for fetching news sources information.
+// This use case encapsulates the business logic for retrieving
+// and processing news sources data.
+// 
+// Key Responsibilities:
+// - Fetch news sources from repository with caching
+// - Apply business rules and validation
+// - Handle errors and edge cases
+// - Return processed sources information
+// 
+// Business Rules:
+// - Filter out sources without names
+// - Sort by source reliability and popularity
+// - Validate source URLs
+// - Support category and country filtering
+// 
+// Usage:
+// ```dart
+// final getNewsSources = GetNewsSources(newsRepository);
+// final sources = await getNewsSources(category: 'business');
+// ```
 
 import '../repositories/news_repository.dart';
 
@@ -61,9 +61,9 @@ class GetNewsSources {
   ///     category: 'business',
   ///     country: 'in',
   ///   );
-  ///   print('Successfully fetched ${sources.length} sources');
+  ///   debugPrint('Successfully fetched ${sources.length} sources');
   /// } catch (e) {
-  ///   print('Failed to fetch sources: $e');
+  ///   debugPrint('Failed to fetch sources: $e');
   /// }
   /// ```
   Future<List<Map<String, dynamic>>> call({

@@ -1,13 +1,13 @@
-/// Professional Animation System
-/// 
-/// This file provides a comprehensive animation system for the Smart Expense Tracker
-/// application. It includes custom animations, transitions, and motion patterns
-/// that enhance user experience and provide smooth, professional interactions.
-/// 
-/// Key Features:
-/// - Custom page transitions with physics-based animations
-/// - Staggered list animations for smooth content loading
-/// - Micro-interactions for buttons and cards
+// Professional Animation System
+// 
+// This file provides a comprehensive animation system for the Smart Expense Tracker
+// application. It includes custom animations, transitions, and motion patterns
+// that enhance user experience and provide smooth, professional interactions.
+// 
+// Key Features:
+// - Custom page transitions with physics-based animations
+// - Staggered list animations for smooth content loading
+// - Micro-interactions for buttons and cards
 /// - Loading animations with proper timing
 /// - Hero animations for seamless navigation
 /// - Spring-based animations for natural motion

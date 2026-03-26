@@ -1,13 +1,12 @@
-/// Smart Expense Tracker - Main Application Entry Point
-/// 
-/// A comprehensive expense tracking application built with Flutter that provides:
-/// - Clean Architecture with Domain-Driven Design
-/// - Riverpod for state management
-/// - Hive for local data persistence
-/// - Material 3 design system
-/// - PDF receipt generation
-/// - Analytics and insights
-/// 
+// Smart Expense Tracker - Main Application Entry Point
+// 
+// A comprehensive expense tracking application built with Flutter that provides:
+// - Clean Architecture with Domain-Driven Design
+// - Riverpod for state management
+// - Hive for local data persistence
+// - Material 3 design system
+// - PDF receipt generation
+// - Analytics and insights
 /// Author: Smart Expense Tracker Team
 /// Version: 1.0.0
 

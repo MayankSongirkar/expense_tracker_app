@@ -1,28 +1,28 @@
-/// Firebase Analytics Service
-/// 
-/// Provides comprehensive user behavior tracking and analytics for the
-/// Smart Expense Tracker application. This service wraps Firebase Analytics
-/// to provide consistent event tracking and user insights across the app.
-/// 
-/// Features:
-/// - User behavior tracking
-/// - Custom event logging
-/// - Screen view tracking
-/// - User property management
-/// - E-commerce event tracking
-/// - Performance monitoring
-/// 
-/// Usage:
-/// ```dart
-/// // Track screen views
-/// AnalyticsService.logScreenView('dashboard');
-/// 
-/// // Track user actions
-/// AnalyticsService.logExpenseAdded(amount: 1500.0, category: 'Food');
-/// 
-/// // Set user properties
-/// AnalyticsService.setUserProperty('preferred_currency', 'INR');
-/// ```
+// Firebase Analytics Service
+// 
+// Provides comprehensive user behavior tracking and analytics for the
+// Smart Expense Tracker application. This service wraps Firebase Analytics
+// to provide consistent event tracking and user insights across the app.
+// 
+// Features:
+// - User behavior tracking
+// - Custom event logging
+// - Screen view tracking
+// - User property management
+// - E-commerce event tracking
+// - Performance monitoring
+// 
+// Usage:
+// ```dart
+// // Track screen views
+// AnalyticsService.logScreenView('dashboard');
+// 
+// // Track user actions
+// AnalyticsService.logExpenseAdded(amount: 1500.0, category: 'Food');
+// 
+// // Set user properties
+// AnalyticsService.setUserProperty('preferred_currency', 'INR');
+// ```
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
@@ -357,7 +357,7 @@ class AnalyticsService {
   /// - [value]: Property value
   static Future<void> setUserProperty(String name, String value) async {
     try {
-      await _analytics.setUserProperty(name: name, value: value);
+      await _analytics.setUserProperty(name: name, initialValue: value);
       
       if (kDebugMode) {
         debugPrint('Analytics: User property set - $name: $value');

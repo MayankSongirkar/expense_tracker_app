@@ -1,27 +1,27 @@
-/// Use Case: Archive Current Month
-/// 
-/// Domain layer use case responsible for archiving the current month's expenses
-/// and resetting for a new month. This enables the monthly reset functionality
-/// while preserving historical data for analytics.
-/// 
-/// Key Responsibilities:
-/// - Archive current month expenses to historical storage
-/// - Clear current expense list for fresh start
-/// - Update yearly summaries with archived data
-/// - Maintain data integrity during the reset process
-/// - Provide feedback on the archiving operation
-/// 
-/// Business Rules:
-/// - Only expenses from the specified month are archived
-/// - Current expense list is cleared after successful archiving
-/// - Yearly summaries are automatically updated
-/// - Archive operation is atomic (all or nothing)
-/// 
-/// Usage:
-/// ```dart
-/// final archiveMonth = ArchiveCurrentMonth(archiveRepository, expenseRepository);
-/// final archive = await archiveMonth(year: 2024, month: 3);
-/// ```
+// Use Case: Archive Current Month
+// 
+// Domain layer use case responsible for archiving the current month's expenses
+// and resetting for a new month. This enables the monthly reset functionality
+// while preserving historical data for analytics.
+// 
+// Key Responsibilities:
+// - Archive current month expenses to historical storage
+// - Clear current expense list for fresh start
+// - Update yearly summaries with archived data
+// - Maintain data integrity during the reset process
+// - Provide feedback on the archiving operation
+// 
+// Business Rules:
+// - Only expenses from the specified month are archived
+// - Current expense list is cleared after successful archiving
+// - Yearly summaries are automatically updated
+// - Archive operation is atomic (all or nothing)
+// 
+// Usage:
+// ```dart
+// final archiveMonth = ArchiveCurrentMonth(archiveRepository, expenseRepository);
+// final archive = await archiveMonth(year: 2024, month: 3);
+// ```
 
 import '../entities/monthly_archive.dart';
 import '../repositories/expense_repository.dart';
@@ -67,9 +67,9 @@ class ArchiveCurrentMonth {
   /// ```dart
   /// try {
   ///   final archive = await archiveCurrentMonth(year: 2024, month: 3);
-  ///   print('Archived ${archive.transactionCount} expenses for ${archive.displayName}');
+  ///   debugPrint('Archived ${archive.transactionCount} expenses for ${archive.displayName}');
   /// } catch (e) {
-  ///   print('Failed to archive month: $e');
+  ///   debugPrint('Failed to archive month: $e');
   /// }
   /// ```
   Future<MonthlyArchive> call({
@@ -117,7 +117,7 @@ class ArchiveCurrentMonth {
   /// ```dart
   /// final archive = await archiveCurrentMonth.autoResetIfNeeded();
   /// if (archive != null) {
-  ///   print('Auto-archived ${archive.displayName}');
+  ///   debugPrint('Auto-archived ${archive.displayName}');
   /// }
   /// ```
   Future<MonthlyArchive?> autoResetIfNeeded() async {
@@ -195,7 +195,7 @@ class ArchiveCurrentMonth {
   /// Example:
   /// ```dart
   /// final preview = await archiveCurrentMonth.getArchivePreview(2024, 3);
-  /// print('Would archive ${preview['count']} expenses totaling ${preview['amount']}');
+  /// debugPrint('Would archive ${preview['count']} expenses totaling ${preview['amount']}');
   /// ```
   Future<Map<String, dynamic>> getArchivePreview({
     required int year,

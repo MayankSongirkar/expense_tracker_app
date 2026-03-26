@@ -1,25 +1,25 @@
-/// Use Case: Add Expense
-/// 
-/// Domain layer use case responsible for adding new expenses to the system.
-/// Follows Clean Architecture principles by encapsulating business logic
-/// and coordinating with the repository layer for data persistence.
-/// 
-/// Key Responsibilities:
-/// - Validate business rules for expense creation
-/// - Coordinate with repository for data persistence
-/// - Maintain separation between domain and data layers
-/// - Provide a clean interface for presentation layer
-/// 
-/// Business Rules Enforced:
-/// - Expense must have valid required fields
-/// - Amount should be positive (validated at repository level)
-/// - Unique ID generation is handled by repository
-/// 
-/// Usage:
-/// ```dart
-/// final addExpense = AddExpense(repository);
-/// await addExpense(newExpense);
-/// ```
+// Use Case: Add Expense
+// 
+// Domain layer use case responsible for adding new expenses to the system.
+// Follows Clean Architecture principles by encapsulating business logic
+// and coordinating with the repository layer for data persistence.
+// 
+// Key Responsibilities:
+// - Validate business rules for expense creation
+// - Coordinate with repository for data persistence
+// - Maintain separation between domain and data layers
+// - Provide a clean interface for presentation layer
+// 
+// Business Rules Enforced:
+// - Expense must have valid required fields
+// - Amount should be positive (validated at repository level)
+// - Unique ID generation is handled by repository
+// 
+// Usage:
+// ```dart
+// final addExpense = AddExpense(repository);
+// await addExpense(newExpense);
+// ```
 
 import '../entities/expense.dart';
 import '../repositories/expense_repository.dart';

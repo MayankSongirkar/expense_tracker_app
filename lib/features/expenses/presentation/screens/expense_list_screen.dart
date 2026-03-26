@@ -213,7 +213,7 @@ class _ExpenseListScreenState extends ConsumerState<ExpenseListScreen>
                   
                   // Category Filter
                   DropdownButtonFormField<String>(
-                    value: selectedCategory,
+                    initialValue: selectedCategory,
                     decoration: const InputDecoration(
                       labelText: 'Category',
                       prefixIcon: Icon(Icons.category_rounded),

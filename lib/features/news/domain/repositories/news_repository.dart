@@ -1,24 +1,24 @@
-/// News Repository Interface
-/// 
-/// Domain layer repository interface that defines the contract for news data operations.
-/// This interface is implemented by the data layer and used by use cases.
-/// 
-/// Following Clean Architecture principles:
-/// - Domain layer defines the interface
-/// - Data layer provides the implementation
-/// - Use cases depend on this abstraction
-/// 
-/// Features:
-/// - Financial news fetching
-/// - Category-based filtering
-/// - Search functionality
-/// - Error handling
-/// 
-/// Usage:
-/// ```dart
-/// final articles = await newsRepository.getFinanceNews();
-/// final searchResults = await newsRepository.searchNews('bitcoin');
-/// ```
+// News Repository Interface
+// 
+// Domain layer repository interface that defines the contract for news data operations.
+// This interface is implemented by the data layer and used by use cases.
+// 
+// Following Clean Architecture principles:
+// - Domain layer defines the interface
+// - Data layer provides the implementation
+// - Use cases depend on this abstraction
+// 
+// Features:
+// - Financial news fetching
+// - Category-based filtering
+// - Search functionality
+// - Error handling
+// 
+// Usage:
+// ```dart
+// final articles = await newsRepository.getFinanceNews();
+// final searchResults = await newsRepository.searchNews('bitcoin');
+// ```
 
 import '../entities/news_article.dart';
 

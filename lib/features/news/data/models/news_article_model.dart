@@ -1,26 +1,26 @@
-/// News Article Data Model
-/// 
-/// Data layer model for news articles that handles JSON serialization/deserialization
-/// and conversion to/from domain entities. This model is responsible for
-/// mapping external API responses to internal domain objects.
-/// 
-/// Key Responsibilities:
-/// - JSON serialization and deserialization
-/// - Data validation and transformation
-/// - Conversion to domain entities
-/// - Handling API response variations
-/// 
-/// Features:
-/// - NewsAPI response mapping
-/// - Null safety and error handling
-/// - Domain entity conversion
-/// - JSON factory constructors
-/// 
-/// Usage:
-/// ```dart
-/// final model = NewsArticleModel.fromJson(jsonData);
-/// final entity = model.toEntity();
-/// ```
+// News Article Data Model
+// 
+// Data layer model for news articles that handles JSON serialization/deserialization
+// and conversion to/from domain entities. This model is responsible for
+// mapping external API responses to internal domain objects.
+// 
+// Key Responsibilities:
+// - JSON serialization and deserialization
+// - Data validation and transformation
+// - Conversion to domain entities
+// - Handling API response variations
+// 
+// Features:
+// - NewsAPI response mapping
+// - Null safety and error handling
+// - Domain entity conversion
+// - JSON factory constructors
+// 
+// Usage:
+// ```dart
+// final model = NewsArticleModel.fromJson(jsonData);
+// final entity = model.toEntity();
+// ```
 
 import '../../domain/entities/news_article.dart';
 

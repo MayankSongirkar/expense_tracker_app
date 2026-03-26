@@ -1,22 +1,22 @@
-/// Yearly Summary Domain Entity
-/// 
-/// Represents aggregated yearly expense data in the domain layer.
-/// Provides comprehensive annual analytics including monthly breakdowns,
-/// category analysis, and trend calculations.
-/// 
-/// Key Features:
-/// - Annual expense aggregation
-/// - Monthly distribution analysis
-/// - Category-wise yearly breakdown
-/// - Trend analysis and insights
-/// - Statistical summaries
-/// - Framework-agnostic design
-/// 
-/// Business Rules:
-/// - Each summary represents exactly one calendar year
-/// - Monthly totals must sum to total amount
-/// - Category totals must sum to total amount
-/// - Active months count only months with expenses > 0
+// Yearly Summary Domain Entity
+// 
+// Represents aggregated yearly expense data in the domain layer.
+// Provides comprehensive annual analytics including monthly breakdowns,
+// category analysis, and trend calculations.
+// 
+// Key Features:
+// - Annual expense aggregation
+// - Monthly distribution analysis
+// - Category-wise yearly breakdown
+// - Trend analysis and insights
+// - Statistical summaries
+// - Framework-agnostic design
+// 
+// Business Rules:
+// - Each summary represents exactly one calendar year
+// - Monthly totals must sum to total amount
+// - Category totals must sum to total amount
+// - Active months count only months with expenses > 0
 
 import 'package:equatable/equatable.dart';
 

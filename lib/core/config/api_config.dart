@@ -1,11 +1,11 @@
-/// API Configuration
-/// 
-/// Central configuration for all external API services used in the app.
-/// This file manages API keys, endpoints, and service configurations.
-/// 
-/// Security Note:
-/// API keys are loaded from .env file for security.
-/// Never commit API keys to version control.
+// API Configuration
+// 
+// Central configuration for all external API services used in the app.
+// This file manages API keys, endpoints, and service configurations.
+// 
+// Security Note:
+// API keys are loaded from .env file for security.
+// Never commit API keys to version control.
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

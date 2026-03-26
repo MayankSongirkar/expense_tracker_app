@@ -1,25 +1,25 @@
-/// News Article Entity
-/// 
-/// Domain entity representing a financial news article.
-/// This is the core business object that contains all the essential
-/// information about a news article without any external dependencies.
-/// 
-/// Features:
-/// - Immutable data structure
-/// - Rich article information
-/// - Source attribution
-/// - Publication metadata
-/// - Content preview
-/// 
-/// Usage:
-/// ```dart
-/// final article = NewsArticle(
-///   id: 'unique-id',
-///   title: 'Market Update',
-///   description: 'Latest market trends...',
-///   // ... other properties
-/// );
-/// ```
+// News Article Entity
+// 
+// Domain entity representing a financial news article.
+// This is the core business object that contains all the essential
+// information about a news article without any external dependencies.
+// 
+// Features:
+// - Immutable data structure
+// - Rich article information
+// - Source attribution
+// - Publication metadata
+// - Content preview
+// 
+// Usage:
+// ```dart
+// final article = NewsArticle(
+//   id: 'unique-id',
+//   title: 'Market Update',
+//   description: 'Latest market trends...',
+//   // ... other properties
+// );
+// ```
 
 import 'package:equatable/equatable.dart';
 

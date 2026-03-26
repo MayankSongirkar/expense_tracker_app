@@ -202,7 +202,7 @@ class _ExpenseDetailsScreenState extends ConsumerState<ExpenseDetailsScreen> {
               ),
               items: AppConstants.expenseCategories.map((category) {
                 return DropdownMenuItem(
-                  value: category,
+                  initialValue: category,
                   child: Text(category),
                 );
               }).toList(),

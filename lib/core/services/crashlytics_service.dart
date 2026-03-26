@@ -1,27 +1,27 @@
-/// Firebase Crashlytics Service
-/// 
-/// Provides centralized crash reporting and logging functionality for the
-/// Smart Expense Tracker application. This service wraps Firebase Crashlytics
-/// to provide consistent error handling and user tracking across the app.
-/// 
-/// Features:
-/// - Automatic crash reporting
-/// - Custom error logging
-/// - User identification for better debugging
-/// - Performance monitoring integration
-/// - Non-fatal error tracking
-/// 
-/// Usage:
-/// ```dart
-/// // Log custom errors
-/// CrashlyticsService.logError('Custom error message', exception, stackTrace);
-/// 
-/// // Set user information
-/// CrashlyticsService.setUserId('user123');
-/// 
-/// // Log custom events
-/// CrashlyticsService.log('User performed action X');
-/// ```
+// Firebase Crashlytics Service
+// 
+// Provides centralized crash reporting and logging functionality for the
+// Smart Expense Tracker application. This service wraps Firebase Crashlytics
+// to provide consistent error handling and user tracking across the app.
+// 
+// Features:
+// - Automatic crash reporting
+// - Custom error logging
+// - User identification for better debugging
+// - Performance monitoring integration
+// - Non-fatal error tracking
+// 
+// Usage:
+// ```dart
+// // Log custom errors
+// CrashlyticsService.logError('Custom error message', exception, stackTrace);
+// 
+// // Set user information
+// CrashlyticsService.setUserId('user123');
+// 
+// // Log custom events
+// CrashlyticsService.log('User performed action X');
+// ```
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';

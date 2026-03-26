@@ -1,28 +1,28 @@
-/// News Remote Data Source
-/// 
-/// Data layer component responsible for fetching news data from NewsData.io API.
-/// This class handles all HTTP requests, response parsing, error handling,
-/// and caching for news-related operations.
-/// 
-/// Key Responsibilities:
-/// - HTTP requests to NewsData.io endpoints
-/// - Response parsing and validation
-/// - Error handling and retry logic
-/// - API key management from .env file
-/// - Caching integration
-/// 
-/// Features:
-/// - Multiple NewsData.io endpoints support
-/// - Comprehensive error handling
-/// - Request timeout management
-/// - Automatic caching with TTL
-/// - Four news categories: Latest, Crypto, Market, Sources
-/// 
-/// Usage:
-/// ```dart
-/// final dataSource = NewsRemoteDataSource(httpClient);
-/// final articles = await dataSource.getLatestNews();
-/// ```
+// News Remote Data Source
+// 
+// Data layer component responsible for fetching news data from NewsData.io API.
+// This class handles all HTTP requests, response parsing, error handling,
+// and caching for news-related operations.
+// 
+// Key Responsibilities:
+// - HTTP requests to NewsData.io endpoints
+// - Response parsing and validation
+// - Error handling and retry logic
+// - API key management from .env file
+// - Caching integration
+// 
+// Features:
+// - Multiple NewsData.io endpoints support
+// - Comprehensive error handling
+// - Request timeout management
+// - Automatic caching with TTL
+// - Four news categories: Latest, Crypto, Market, Sources
+// 
+// Usage:
+// ```dart
+// final dataSource = NewsRemoteDataSource(httpClient);
+// final articles = await dataSource.getLatestNews();
+// ```
 
 import 'dart:convert';
 import 'dart:io';

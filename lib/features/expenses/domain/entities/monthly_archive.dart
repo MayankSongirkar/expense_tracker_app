@@ -1,21 +1,21 @@
-/// Monthly Archive Domain Entity
-/// 
-/// Represents a monthly archive of expenses in the domain layer.
-/// Contains aggregated expense data for a specific month with
-/// comprehensive analytics and summary information.
-/// 
-/// Key Features:
-/// - Monthly expense aggregation
-/// - Category-wise breakdown
-/// - Statistical summaries
-/// - Framework-agnostic design
-/// - Immutable data structure
-/// 
-/// Business Rules:
-/// - Each archive represents exactly one calendar month
-/// - Archives are immutable once created
-/// - Category totals must sum to total amount
-/// - Transaction count must match expense list length
+// Monthly Archive Domain Entity
+// 
+// Represents a monthly archive of expenses in the domain layer.
+// Contains aggregated expense data for a specific month with
+// comprehensive analytics and summary information.
+// 
+// Key Features:
+// - Monthly expense aggregation
+// - Category-wise breakdown
+// - Statistical summaries
+// - Framework-agnostic design
+// - Immutable data structure
+// 
+// Business Rules:
+// - Each archive represents exactly one calendar month
+// - Archives are immutable once created
+// - Category totals must sum to total amount
+// - Transaction count must match expense list length
 
 import 'package:equatable/equatable.dart';
 import 'expense.dart';

@@ -259,7 +259,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             
             // Animated counter for total amount
             AnimatedCounter(
-              value: totalAmount,
+              initialValue: totalAmount,
               textStyle: const TextStyle(
                 color: Colors.white,
                 fontSize: 36,
@@ -356,7 +356,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             child: BounceAnimation(
               child: StatsCard(
                 title: 'Transactions',
-                value: monthlyExpenses.length.toString(),
+                initialValue: monthlyExpenses.length.toString(),
                 icon: Icons.receipt_long_rounded,
                 color: AppTheme.secondaryColor,
               ),
@@ -374,7 +374,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             child: BounceAnimation(
               child: StatsCard(
                 title: 'Average',
-                value: avgExpense.toStringAsFixed(0),
+                initialValue: avgExpense.toStringAsFixed(0),
                 icon: Icons.analytics_rounded,
                 color: AppTheme.accentColor,
                 isAmount: true,
@@ -393,7 +393,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             child: BounceAnimation(
               child: StatsCard(
                 title: 'Highest',
-                value: highestExpense.toStringAsFixed(0),
+                initialValue: highestExpense.toStringAsFixed(0),
                 icon: Icons.trending_up_rounded,
                 color: AppTheme.errorColor,
                 isAmount: true,

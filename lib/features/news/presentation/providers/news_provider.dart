@@ -1,29 +1,29 @@
-/// News State Management Provider
-/// 
-/// Presentation layer provider for managing news state using Riverpod.
-/// This provider handles all news-related state management including
-/// loading states, error handling, and data caching.
-/// 
-/// Key Responsibilities:
-/// - Manage news articles state
-/// - Handle loading and error states
-/// - Coordinate with use cases
-/// - Provide search functionality
-/// - Cache management
-/// 
-/// Features:
-/// - Reactive state management
-/// - Error handling with recovery
-/// - Search functionality
-/// - Pagination support
-/// - Analytics integration
-/// 
-/// Usage:
-/// ```dart
-/// final newsState = ref.watch(newsProvider);
-/// final newsNotifier = ref.read(newsProvider.notifier);
-/// await newsNotifier.loadFinanceNews();
-/// ```
+// News State Management Provider
+// 
+// Presentation layer provider for managing news state using Riverpod.
+// This provider handles all news-related state management including
+// loading states, error handling, and data caching.
+// 
+// Key Responsibilities:
+// - Manage news articles state
+// - Handle loading and error states
+// - Coordinate with use cases
+// - Provide search functionality
+// - Cache management
+// 
+// Features:
+// - Reactive state management
+// - Error handling with recovery
+// - Search functionality
+// - Pagination support
+// - Analytics integration
+// 
+// Usage:
+// ```dart
+// final newsState = ref.watch(newsProvider);
+// final newsNotifier = ref.read(newsProvider.notifier);
+// await newsNotifier.loadFinanceNews();
+// ```
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/di/injection_container.dart';
@@ -395,9 +395,9 @@ class NewsNotifier extends StateNotifier<NewsState> {
       );
 
       // Determine page number
-      final page = loadMore && state.searchQuery == query 
-          ? state.currentPage 
-          : 1;
+      // final page = loadMore && state.searchQuery == query 
+      //     ? state.currentPage 
+      //     : 1;
 
       // Perform search
       final searchResults = await searchNews(query.trim());

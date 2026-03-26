@@ -1,26 +1,26 @@
-/// Use Case: Get Monthly Archives
-/// 
-/// Domain layer use case for retrieving historical monthly expense archives.
-/// Provides various methods to access archived expense data for analytics,
-/// reporting, and historical analysis.
-/// 
-/// Key Responsibilities:
-/// - Retrieve monthly archives by various criteria
-/// - Provide filtered access to historical data
-/// - Support analytics and reporting requirements
-/// - Maintain clean interface for presentation layer
-/// 
-/// Business Rules:
-/// - Archives are read-only historical data
-/// - Data is returned in consistent, sorted order
-/// - Filtering maintains data integrity
-/// - Empty results are handled gracefully
-/// 
-/// Usage:
-/// ```dart
-/// final getArchives = GetMonthlyArchives(archiveRepository);
-/// final archives = await getArchives.forYear(2024);
-/// ```
+// Use Case: Get Monthly Archives
+// 
+// Domain layer use case for retrieving historical monthly expense archives.
+// Provides various methods to access archived expense data for analytics,
+// reporting, and historical analysis.
+// 
+// Key Responsibilities:
+// - Retrieve monthly archives by various criteria
+// - Provide filtered access to historical data
+// - Support analytics and reporting requirements
+// - Maintain clean interface for presentation layer
+// 
+// Business Rules:
+// - Archives are read-only historical data
+// - Data is returned in consistent, sorted order
+// - Filtering maintains data integrity
+// - Empty results are handled gracefully
+// 
+// Usage:
+// ```dart
+// final getArchives = GetMonthlyArchives(archiveRepository);
+// final archives = await getArchives.forYear(2024);
+// ```
 
 import '../entities/monthly_archive.dart';
 import '../entities/yearly_summary.dart';
@@ -50,7 +50,7 @@ class GetMonthlyArchives {
   /// Example:
   /// ```dart
   /// final allArchives = await getArchives();
-  /// print('Total archived months: ${allArchives.length}');
+  /// debugPrint('Total archived months: ${allArchives.length}');
   /// ```
   Future<List<MonthlyArchive>> call() async {
     return await repository.getAllArchives();
@@ -90,7 +90,7 @@ class GetMonthlyArchives {
   /// ```dart
   /// final marchArchive = await getArchives.forMonth(2024, 3);
   /// if (marchArchive != null) {
-  ///   print('March spending: ${marchArchive.totalAmount}');
+  ///   debugPrint('March spending: ${marchArchive.totalAmount}');
   /// }
   /// ```
   Future<MonthlyArchive?> forMonth(int year, int month) async {
@@ -199,8 +199,8 @@ class GetMonthlyArchives {
   /// ```dart
   /// final summary = await getArchives.getYearlySummary(2024);
   /// if (summary != null) {
-  ///   print('Year total: ${summary.totalAmount}');
-  ///   print('Average monthly: ${summary.averageMonthlySpending}');
+  ///   debugPrint('Year total: ${summary.totalAmount}');
+  ///   debugPrint('Average monthly: ${summary.averageMonthlySpending}');
   /// }
   /// ```
   Future<YearlySummary?> getYearlySummary(int year) async {
@@ -219,7 +219,7 @@ class GetMonthlyArchives {
   /// ```dart
   /// final summaries = await getArchives.getAllYearlySummaries();
   /// for (final summary in summaries) {
-  ///   print('${summary.year}: ${summary.totalAmount}');
+  ///   debugPrint('${summary.year}: ${summary.totalAmount}');
   /// }
   /// ```
   Future<List<YearlySummary>> getAllYearlySummaries() async {
@@ -278,8 +278,8 @@ class GetMonthlyArchives {
   /// Example:
   /// ```dart
   /// final stats = await getArchives.getArchiveStatistics();
-  /// print('Total archived: ${stats['totalAmount']}');
-  /// print('Months archived: ${stats['totalMonths']}');
+  /// debugPrint('Total archived: ${stats['totalAmount']}');
+  /// debugPrint('Months archived: ${stats['totalMonths']}');
   /// ```
   Future<Map<String, dynamic>> getArchiveStatistics() async {
     final allArchives = await repository.getAllArchives();

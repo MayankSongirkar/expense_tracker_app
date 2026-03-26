@@ -1,7 +1,7 @@
-/// Category Tracker Chart Widget
-/// 
-/// Professional category-wise expense tracking with pie chart and detailed breakdown.
-/// Provides comprehensive visualization of spending patterns across different categories.
+// Category Tracker Chart Widget
+// 
+// Professional category-wise expense tracking with pie chart and detailed breakdown.
+// Provides comprehensive visualization of spending patterns across different categories.
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -89,7 +89,7 @@ class _CategoryTrackerChartState extends State<CategoryTrackerChart>
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                  color: AppTheme.primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
@@ -188,7 +188,7 @@ class _CategoryTrackerChartState extends State<CategoryTrackerChart>
         color: Colors.white,
         shadows: [
           Shadow(
-            color: Colors.black.withValues(alpha: 0.5),
+            color: Colors.black.withOpacity(0.5),
             blurRadius: 2,
           ),
         ],
@@ -212,8 +212,8 @@ class _CategoryTrackerChartState extends State<CategoryTrackerChart>
         boxShadow: [
           BoxShadow(
             color: isDark 
-                ? Colors.black.withValues(alpha: 0.2)
-                : Colors.black.withValues(alpha: 0.05),
+                ? Colors.black.withOpacity(0.2)
+                : Colors.black.withOpacity(0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -228,10 +228,10 @@ class _CategoryTrackerChartState extends State<CategoryTrackerChart>
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.1),
+                color: color.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: color.withValues(alpha: 0.3),
+                  color: color.withOpacity(0.3),
                   width: 1,
                 ),
               ),
@@ -261,7 +261,7 @@ class _CategoryTrackerChartState extends State<CategoryTrackerChart>
                         ),
                       ),
                       Text(
-                        CurrencyFormatter.formatAmount(data.amount),
+                        CurrencyFormatter.format(data.amount),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -281,8 +281,8 @@ class _CategoryTrackerChartState extends State<CategoryTrackerChart>
                           height: 6,
                           decoration: BoxDecoration(
                             color: isDark 
-                                ? Colors.white.withValues(alpha: 0.1)
-                                : Colors.black.withValues(alpha: 0.1),
+                                ? Colors.white.withOpacity(0.1)
+                                : Colors.black.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(3),
                           ),
                           child: FractionallySizedBox(
@@ -304,8 +304,8 @@ class _CategoryTrackerChartState extends State<CategoryTrackerChart>
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                           color: isDark 
-                              ? Colors.white.withValues(alpha: 0.7)
-                              : Colors.black.withValues(alpha: 0.6),
+                              ? Colors.white.withOpacity(0.7)
+                              : Colors.black.withOpacity(0.6),
                         ),
                       ),
                     ],
@@ -318,8 +318,8 @@ class _CategoryTrackerChartState extends State<CategoryTrackerChart>
                     style: TextStyle(
                       fontSize: 12,
                       color: isDark 
-                          ? Colors.white.withValues(alpha: 0.6)
-                          : Colors.black.withValues(alpha: 0.5),
+                          ? Colors.white.withOpacity(0.6)
+                          : Colors.black.withOpacity(0.5),
                     ),
                   ),
                 ],
@@ -342,7 +342,7 @@ class _CategoryTrackerChartState extends State<CategoryTrackerChart>
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                color: AppTheme.primaryColor.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -371,8 +371,8 @@ class _CategoryTrackerChartState extends State<CategoryTrackerChart>
               style: TextStyle(
                 fontSize: 14,
                 color: isDark 
-                    ? Colors.white.withValues(alpha: 0.7)
-                    : Colors.black.withValues(alpha: 0.6),
+                    ? Colors.white.withOpacity(0.7)
+                    : Colors.black.withOpacity(0.6),
               ),
             ),
           ],

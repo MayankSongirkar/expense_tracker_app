@@ -1,21 +1,21 @@
-/// Expense Archive Data Source
-/// 
-/// Handles local storage operations for monthly archives and yearly summaries.
-/// Provides efficient storage and retrieval of historical expense data with
-/// support for monthly reset functionality and comprehensive analytics.
-/// 
-/// Key Responsibilities:
-/// - Monthly archive storage and retrieval
-/// - Yearly summary calculation and caching
-/// - Monthly reset operations
-/// - Historical data access for analytics
-/// - Data integrity and consistency management
-/// 
-/// Architecture:
-/// - Uses separate Hive boxes for archives and summaries
-/// - Efficient indexing by month/year keys
-/// - Automatic yearly summary updates
-/// - Optimized for analytics queries
+// Expense Archive Data Source
+// 
+// Handles local storage operations for monthly archives and yearly summaries.
+// Provides efficient storage and retrieval of historical expense data with
+// support for monthly reset functionality and comprehensive analytics.
+// 
+// Key Responsibilities:
+// - Monthly archive storage and retrieval
+// - Yearly summary calculation and caching
+// - Monthly reset operations
+// - Historical data access for analytics
+// - Data integrity and consistency management
+// 
+// Architecture:
+// - Uses separate Hive boxes for archives and summaries
+// - Efficient indexing by month/year keys
+// - Automatic yearly summary updates
+// - Optimized for analytics queries
 
 import 'package:hive/hive.dart';
 import '../models/monthly_archive_model.dart';

@@ -1,23 +1,23 @@
-/// Application Theme Configuration
-/// 
-/// Centralized theme management for the Smart Expense Tracker application.
-/// Provides consistent design system with Material 3 components and
-/// professional color schemes for both light and dark modes.
-/// 
-/// Key Features:
-/// - Material 3 design system compliance
-/// - Consistent color palette across the app
-/// - Professional gradient definitions
-/// - Comprehensive component theming
-/// - Accessibility-friendly color contrasts
-/// - Dark mode support with appropriate colors
-/// 
-/// Design Philosophy:
-/// - Clean, modern interface with subtle shadows
-/// - Consistent spacing and border radius (12-16px)
-/// - Professional color scheme with indigo primary
-/// - Smooth transitions and animations
-/// - User-friendly form controls and buttons
+// Application Theme Configuration
+// 
+// Centralized theme management for the Smart Expense Tracker application.
+// Provides consistent design system with Material 3 components and
+// professional color schemes for both light and dark modes.
+// 
+// Key Features:
+// - Material 3 design system compliance
+// - Consistent color palette across the app
+// - Professional gradient definitions
+// - Comprehensive component theming
+// - Accessibility-friendly color contrasts
+// - Dark mode support with appropriate colors
+// 
+// Design Philosophy:
+// - Clean, modern interface with subtle shadows
+// - Consistent spacing and border radius (12-16px)
+// - Professional color scheme with indigo primary
+// - Smooth transitions and animations
+// - User-friendly form controls and buttons
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

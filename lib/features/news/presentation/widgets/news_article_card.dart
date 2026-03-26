@@ -1,24 +1,24 @@
-/// News Article Card Widget
-/// 
-/// A professional card widget for displaying news articles with modern
-/// Material 3 design. Features image loading, source attribution,
-/// publication time, and interactive animations.
-/// 
-/// Key Features:
-/// - Professional Material 3 design
-/// - Cached network image loading
-/// - Shimmer loading effects
-/// - Interactive animations
-/// - Accessibility support
-/// - Responsive layout
-/// 
-/// Usage:
-/// ```dart
-/// NewsArticleCard(
-///   article: newsArticle,
-///   onTap: () => openArticle(newsArticle),
-/// )
-/// ```
+// News Article Card Widget
+// 
+// A professional card widget for displaying news articles with modern
+// Material 3 design. Features image loading, source attribution,
+// publication time, and interactive animations.
+// 
+// Key Features:
+// - Professional Material 3 design
+// - Cached network image loading
+// - Shimmer loading effects
+// - Interactive animations
+// - Accessibility support
+// - Responsive layout
+// 
+// Usage:
+// ```dart
+// NewsArticleCard(
+//   article: newsArticle,
+//   onTap: () => openArticle(newsArticle),
+// )
+// ```
 
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -58,19 +58,19 @@ class NewsArticleCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: isDark 
-                ? const Color(0xFF1E1E1E).withValues(alpha: 0.8)
-                : Colors.white.withValues(alpha: 0.9),
+                ? const Color(0xFF1E1E1E).withOpacity(0.8)
+                : Colors.white.withOpacity(0.9),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: isDark 
-                  ? Colors.white.withValues(alpha: 0.1)
-                  : Colors.black.withValues(alpha: 0.1),
+                  ? Colors.white.withOpacity(0.1)
+                  : Colors.black.withOpacity(0.1),
             ),
             boxShadow: [
               BoxShadow(
                 color: isDark 
-                    ? Colors.black.withValues(alpha: 0.3)
-                    : Colors.black.withValues(alpha: 0.1),
+                    ? Colors.black.withOpacity(0.3)
+                    : Colors.black.withOpacity(0.1),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
                 spreadRadius: 0,
@@ -224,7 +224,7 @@ class NewsArticleCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
-            color: AppTheme.primaryColor.withValues(alpha: 0.1),
+            color: AppTheme.primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Text(
@@ -246,8 +246,8 @@ class NewsArticleCard extends StatelessWidget {
             style: TextStyle(
               fontSize: isCompact ? 10 : 12,
               color: isDark 
-                  ? Colors.white.withValues(alpha: 0.6)
-                  : Colors.black.withValues(alpha: 0.6),
+                  ? Colors.white.withOpacity(0.6)
+                  : Colors.black.withOpacity(0.6),
             ),
           ),
         ),
@@ -277,8 +277,8 @@ class NewsArticleCard extends StatelessWidget {
       style: TextStyle(
         fontSize: isCompact ? 12 : 14,
         color: isDark 
-            ? Colors.white.withValues(alpha: 0.8)
-            : Colors.black.withValues(alpha: 0.7),
+            ? Colors.white.withOpacity(0.8)
+            : Colors.black.withOpacity(0.7),
         height: 1.4,
       ),
       maxLines: maxLines ?? 3,
@@ -307,13 +307,13 @@ class NewsArticleCardSkeleton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: isDark 
-            ? const Color(0xFF1E1E1E).withValues(alpha: 0.8)
-            : Colors.white.withValues(alpha: 0.9),
+            ? const Color(0xFF1E1E1E).withOpacity(0.8)
+            : Colors.white.withOpacity(0.9),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isDark 
-              ? Colors.white.withValues(alpha: 0.1)
-              : Colors.black.withValues(alpha: 0.1),
+              ? Colors.white.withOpacity(0.1)
+              : Colors.black.withOpacity(0.1),
         ),
       ),
       child: isCompact ? _buildCompactSkeleton() : _buildFullSkeleton(),

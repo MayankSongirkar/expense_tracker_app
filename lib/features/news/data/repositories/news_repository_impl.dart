@@ -1,29 +1,30 @@
-/// News Repository Implementation
-/// 
-/// Data layer implementation of the NewsRepository interface.
-/// This class coordinates between the remote data source and domain layer,
-/// handling data transformation, error management, and caching.
-/// 
-/// Key Responsibilities:
-/// - Implement domain repository interface
-/// - Coordinate with remote data sources
-/// - Transform data models to domain entities
-/// - Handle caching and offline scenarios
-/// - Manage error propagation
-/// 
-/// Features:
-/// - Clean Architecture compliance
-/// - Comprehensive error handling
-/// - Data transformation
-/// - Automatic caching integration
-/// - Four news categories support
-/// 
-/// Usage:
-/// ```dart
-/// final repository = NewsRepositoryImpl(remoteDataSource);
-/// final articles = await repository.getLatestNews();
-/// ```
+// News Repository Implementation
+// 
+// Data layer implementation of the NewsRepository interface.
+// This class coordinates between the remote data source and domain layer,
+// handling data transformation, error management, and caching.
+// 
+// Key Responsibilities:
+// - Implement domain repository interface
+// - Coordinate with remote data sources
+// - Transform data models to domain entities
+// - Handle caching and offline scenarios
+// - Manage error propagation
+// 
+// Features:
+// - Clean Architecture compliance
+// - Comprehensive error handling
+// - Data transformation
+// - Automatic caching integration
+// - Four news categories support
+// 
+// Usage:
+// ```dart
+// final repository = NewsRepositoryImpl(remoteDataSource);
+// final articles = await repository.getLatestNews();
+// ```
 
+import 'package:flutter/foundation.dart';
 import '../../domain/entities/news_article.dart';
 import '../../domain/repositories/news_repository.dart';
 import '../datasources/news_remote_datasource.dart';
@@ -212,7 +213,7 @@ class NewsRepositoryImpl implements NewsRepository {
       } catch (e) {
         // Log the error but continue processing other articles
         // In production, you might want to use a proper logging service
-        print('Warning: Failed to convert article model to entity: $e');
+        debugPrint('Warning: Failed to convert article model to entity: $e');
         continue;
       }
     }

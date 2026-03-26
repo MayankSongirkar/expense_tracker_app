@@ -1,7 +1,7 @@
-/// News Loading Widget
-/// 
-/// Professional loading state for news content with skeleton animations.
-/// Provides visual feedback while news articles are being fetched.
+// News Loading Widget
+// 
+// Professional loading state for news content with skeleton animations.
+// Provides visual feedback while news articles are being fetched.
 
 import 'package:flutter/material.dart';
 import 'news_skeleton_loader.dart';

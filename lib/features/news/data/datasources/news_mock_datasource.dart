@@ -1,8 +1,8 @@
-/// Mock News Data Source
-/// 
-/// Provides mock news data for development and testing purposes.
-/// This data source simulates the NewsData.io API response structure
-/// to allow development without network dependencies.
+// Mock News Data Source
+// 
+// Provides mock news data for development and testing purposes.
+// This data source simulates the NewsData.io API response structure
+// to allow development without network dependencies.
 
 import '../models/news_article_model.dart';
 

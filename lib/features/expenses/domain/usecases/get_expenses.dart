@@ -1,34 +1,34 @@
-/// Use Case: Get Expenses
-/// 
-/// Domain layer use case for retrieving expense data with various filtering options.
-/// Provides a clean interface for the presentation layer to access expense data
-/// while maintaining separation from data layer implementation details.
-/// 
-/// Key Features:
-/// - Retrieve all expenses from the repository
-/// - Filter expenses by date range for period analysis
-/// - Filter expenses by category for targeted insights
-/// - Consistent error handling and data transformation
-/// 
-/// Architecture Benefits:
-/// - Encapsulates business logic for data retrieval
-/// - Provides multiple query methods for different use cases
-/// - Maintains clean separation between domain and data layers
-/// - Enables easy testing and mocking of data operations
-/// 
-/// Usage Examples:
-/// ```dart
-/// final getExpenses = GetExpenses(repository);
-/// 
-/// // Get all expenses
-/// final allExpenses = await getExpenses();
-/// 
-/// // Get expenses for a specific month
-/// final monthlyExpenses = await getExpenses.byDateRange(startDate, endDate);
-/// 
-/// // Get expenses for a specific category
-/// final foodExpenses = await getExpenses.byCategory('Food');
-/// ```
+// Use Case: Get Expenses
+// 
+// Domain layer use case for retrieving expense data with various filtering options.
+// Provides a clean interface for the presentation layer to access expense data
+// while maintaining separation from data layer implementation details.
+// 
+// Key Features:
+// - Retrieve all expenses from the repository
+// - Filter expenses by date range for period analysis
+// - Filter expenses by category for targeted insights
+// - Consistent error handling and data transformation
+// 
+// Architecture Benefits:
+// - Encapsulates business logic for data retrieval
+// - Provides multiple query methods for different use cases
+// - Maintains clean separation between domain and data layers
+// - Enables easy testing and mocking of data operations
+// 
+// Usage Examples:
+// ```dart
+// final getExpenses = GetExpenses(repository);
+// 
+// // Get all expenses
+// final allExpenses = await getExpenses();
+// 
+// // Get expenses for a specific month
+// final monthlyExpenses = await getExpenses.byDateRange(startDate, endDate);
+// 
+// // Get expenses for a specific category
+// final foodExpenses = await getExpenses.byCategory('Food');
+// ```
 
 import '../entities/expense.dart';
 import '../repositories/expense_repository.dart';
@@ -64,7 +64,7 @@ class GetExpenses {
   /// Example:
   /// ```dart
   /// final expenses = await getExpenses();
-  /// print('Total expenses: ${expenses.length}');
+  /// debugPrint('Total expenses: ${expenses.length}');
   /// ```
   Future<List<Expense>> call() async {
     return await repository.getExpenses();

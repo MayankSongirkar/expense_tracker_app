@@ -1,26 +1,26 @@
-/// Get Latest News Use Case
-/// 
-/// Domain layer use case for fetching the latest news articles.
-/// This use case encapsulates the business logic for retrieving
-/// and processing current news data with caching support.
-/// 
-/// Key Responsibilities:
-/// - Fetch latest news from repository with caching
-/// - Apply business rules and validation
-/// - Handle errors and edge cases
-/// - Return processed news articles
-/// 
-/// Business Rules:
-/// - Filter out articles without titles
-/// - Sort by publication date (newest first)
-/// - Validate article URLs
-/// - Support category and country filtering
-/// 
-/// Usage:
-/// ```dart
-/// final getLatestNews = GetLatestNews(newsRepository);
-/// final articles = await getLatestNews(category: 'business');
-/// ```
+// Get Latest News Use Case
+// 
+// Domain layer use case for fetching the latest news articles.
+// This use case encapsulates the business logic for retrieving
+// and processing current news data with caching support.
+// 
+// Key Responsibilities:
+// - Fetch latest news from repository with caching
+// - Apply business rules and validation
+// - Handle errors and edge cases
+// - Return processed news articles
+// 
+// Business Rules:
+// - Filter out articles without titles
+// - Sort by publication date (newest first)
+// - Validate article URLs
+// - Support category and country filtering
+// 
+// Usage:
+// ```dart
+// final getLatestNews = GetLatestNews(newsRepository);
+// final articles = await getLatestNews(category: 'business');
+// ```
 
 import '../entities/news_article.dart';
 import '../repositories/news_repository.dart';
@@ -62,9 +62,9 @@ class GetLatestNews {
   ///     category: 'business',
   ///     country: 'in',
   ///   );
-  ///   print('Successfully fetched ${articles.length} articles');
+  ///   debugPrint('Successfully fetched ${articles.length} articles');
   /// } catch (e) {
-  ///   print('Failed to fetch news: $e');
+  ///   debugPrint('Failed to fetch news: $e');
   /// }
   /// ```
   Future<List<NewsArticle>> call({

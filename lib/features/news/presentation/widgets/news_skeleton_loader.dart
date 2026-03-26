@@ -1,11 +1,10 @@
-/// News Skeleton Loader Widget
-/// 
-/// Professional skeleton loading animation for news articles.
-/// Provides a smooth shimmer effect while content is loading.
+// News Skeleton Loader Widget
+// 
+// Professional skeleton loading animation for news articles.
+// Provides a smooth shimmer effect while content is loading.
 
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../../core/theme/app_theme.dart';
 
 /// Skeleton loader for news articles
 /// 
@@ -56,8 +55,8 @@ class NewsSkeletonLoader extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: isDark 
-                  ? Colors.black.withValues(alpha: 0.3)
-                  : Colors.black.withValues(alpha: 0.1),
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.black.withOpacity(0.1),
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -250,8 +249,8 @@ class NewsSourcesSkeletonLoader extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: isDark 
-                  ? Colors.black.withValues(alpha: 0.2)
-                  : Colors.black.withValues(alpha: 0.05),
+                  ? Colors.black.withOpacity(0.2)
+                  : Colors.black.withOpacity(0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -365,8 +364,8 @@ class NewsSearchSkeletonLoader extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: isDark 
-                  ? Colors.black.withValues(alpha: 0.2)
-                  : Colors.black.withValues(alpha: 0.05),
+                  ? Colors.black.withOpacity(0.2)
+                  : Colors.black.withOpacity(0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),

@@ -1,20 +1,20 @@
-/// Domain Entity: Expense
-/// 
-/// Core business entity representing a single expense record in the system.
-/// This entity follows Domain-Driven Design principles and is framework-agnostic.
-/// 
-/// Key Features:
-/// - Immutable data structure using Equatable for value equality
-/// - Required fields validation through constructor
-/// - Copy method for creating modified instances
-/// - Clean separation from data models and UI representations
-/// 
-/// Business Rules:
-/// - Each expense must have a unique identifier
-/// - Amount must be a positive number (validated at use case level)
-/// - Date represents when the expense occurred
-/// - Category helps in expense classification and analytics
-/// - Notes are optional for additional context
+// Domain Entity: Expense
+// 
+// Core business entity representing a single expense record in the system.
+// This entity follows Domain-Driven Design principles and is framework-agnostic.
+// 
+// Key Features:
+// - Immutable data structure using Equatable for value equality
+// - Required fields validation through constructor
+// - Copy method for creating modified instances
+// - Clean separation from data models and UI representations
+// 
+// Business Rules:
+// - Each expense must have a unique identifier
+// - Amount must be a positive number (validated at use case level)
+// - Date represents when the expense occurred
+// - Category helps in expense classification and analytics
+// - Notes are optional for additional context
 
 import 'package:equatable/equatable.dart';
 

@@ -1,25 +1,25 @@
-/// News Error Widget
-/// 
-/// Professional error handling widget for news screens with retry
-/// functionality and user-friendly error messages. Provides clear
-/// feedback when news loading fails with actionable recovery options.
-/// 
-/// Key Features:
-/// - User-friendly error messages
-/// - Retry functionality with animations
-/// - Professional Material 3 design
-/// - Different error types handling
-/// - Accessibility support
-/// 
-/// Usage:
-/// ```dart
-/// if (hasError) {
-///   return NewsErrorWidget(
-///     error: errorMessage,
-///     onRetry: () => retryLoading(),
-///   );
-/// }
-/// ```
+// News Error Widget
+// 
+// Professional error handling widget for news screens with retry
+// functionality and user-friendly error messages. Provides clear
+// feedback when news loading fails with actionable recovery options.
+// 
+// Key Features:
+// - User-friendly error messages
+// - Retry functionality with animations
+// - Professional Material 3 design
+// - Different error types handling
+// - Accessibility support
+// 
+// Usage:
+// ```dart
+// if (hasError) {
+//   return NewsErrorWidget(
+//     error: errorMessage,
+//     onRetry: () => retryLoading(),
+//   );
+// }
+// ```
 
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_theme.dart';
@@ -127,7 +127,7 @@ class _NewsErrorWidgetState extends State<NewsErrorWidget>
                 child: Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: _getErrorColor().withValues(alpha: 0.1),
+                    color: _getErrorColor().withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -159,8 +159,8 @@ class _NewsErrorWidgetState extends State<NewsErrorWidget>
                 style: TextStyle(
                   fontSize: 14,
                   color: isDark 
-                      ? Colors.white.withValues(alpha: 0.7)
-                      : Colors.black.withValues(alpha: 0.6),
+                      ? Colors.white.withOpacity(0.7)
+                      : Colors.black.withOpacity(0.6),
                   height: 1.5,
                 ),
                 textAlign: TextAlign.center,
@@ -188,17 +188,17 @@ class _NewsErrorWidgetState extends State<NewsErrorWidget>
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: isDark 
-              ? const Color(0xFF1E1E1E).withValues(alpha: 0.9)
-              : Colors.white.withValues(alpha: 0.9),
+              ? const Color(0xFF1E1E1E).withOpacity(0.9)
+              : Colors.white.withOpacity(0.9),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: _getErrorColor().withValues(alpha: 0.3),
+            color: _getErrorColor().withOpacity(0.3),
           ),
           boxShadow: [
             BoxShadow(
               color: isDark 
-                  ? Colors.black.withValues(alpha: 0.3)
-                  : Colors.black.withValues(alpha: 0.1),
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.black.withOpacity(0.1),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -210,7 +210,7 @@ class _NewsErrorWidgetState extends State<NewsErrorWidget>
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: _getErrorColor().withValues(alpha: 0.1),
+                color: _getErrorColor().withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
@@ -241,8 +241,8 @@ class _NewsErrorWidgetState extends State<NewsErrorWidget>
                     style: TextStyle(
                       fontSize: 12,
                       color: isDark 
-                          ? Colors.white.withValues(alpha: 0.7)
-                          : Colors.black.withValues(alpha: 0.6),
+                          ? Colors.white.withOpacity(0.7)
+                          : Colors.black.withOpacity(0.6),
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -262,7 +262,7 @@ class _NewsErrorWidgetState extends State<NewsErrorWidget>
                   icon: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                      color: AppTheme.primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -316,15 +316,15 @@ class _NewsErrorWidgetState extends State<NewsErrorWidget>
             Icons.help_outline_rounded,
             size: 18,
             color: isDark 
-                ? Colors.white.withValues(alpha: 0.7)
-                : Colors.black.withValues(alpha: 0.6),
+                ? Colors.white.withOpacity(0.7)
+                : Colors.black.withOpacity(0.6),
           ),
           label: Text(
             'Need Help?',
             style: TextStyle(
               color: isDark 
-                  ? Colors.white.withValues(alpha: 0.7)
-                  : Colors.black.withValues(alpha: 0.6),
+                  ? Colors.white.withOpacity(0.7)
+                  : Colors.black.withOpacity(0.6),
             ),
           ),
         ),

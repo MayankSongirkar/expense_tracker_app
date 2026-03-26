@@ -1,20 +1,20 @@
-/// Expense Management Provider
-/// 
-/// This file contains the state management logic for expense operations using Riverpod.
-/// It follows the Clean Architecture pattern with clear separation of concerns.
-/// 
-/// Key Components:
-/// - [ExpenseState]: Immutable state class for expense data
-/// - [ExpenseNotifier]: State notifier for expense operations
-/// - [expenseProvider]: Riverpod provider for dependency injection
-/// 
-/// Features:
-/// - CRUD operations for expenses
-/// - Search and filtering capabilities
-/// - CSV export functionality
-/// - PDF receipt generation
-/// - Error handling and loading states
-/// - Crashlytics integration for error tracking
+// Expense Management Provider
+// 
+// This file contains the state management logic for expense operations using Riverpod.
+// It follows the Clean Architecture pattern with clear separation of concerns.
+// 
+// Key Components:
+// - [ExpenseState]: Immutable state class for expense data
+// - [ExpenseNotifier]: State notifier for expense operations
+// - [expenseProvider]: Riverpod provider for dependency injection
+// 
+// Features:
+// - CRUD operations for expenses
+// - Search and filtering capabilities
+// - CSV export functionality
+// - PDF receipt generation
+// - Error handling and loading states
+// - Crashlytics integration for error tracking
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/di/injection_container.dart';
