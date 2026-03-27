@@ -1,0 +1,143 @@
+name: 🚀 Manual Build & Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build Type'
+        required: true
+        default: 'debug'
+        type: choice
+        options:
+        - debug
+        - release
+      deploy_firebase:
+        description: 'Deploy to Firebase App Distribution'
+        required: false
+        default: false
+        type: boolean
+      run_tests:
+        description: 'Run Tests'
+        required: false
+        default: true
+        type: boolean
+      build_notes:
+        description: 'Build Notes (optional)'
+        required: false
+        default: 'Manual build'
+
+env:
+  FLUTTER_VERSION: '3.24.0'
+
+jobs:
+  manual-build:
+    name: Manual Build & Deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📋 Build Summary
+      run: |
+        echo "🚀 Starting Manual Build"
+        echo "Build Type: ${{ github.event.inputs.build_type }}"
+        echo "Deploy to Firebase: ${{ github.event.inputs.deploy_firebase }}"
+        echo "Run Tests: ${{ github.event.inputs.run_tests }}"
+        echo "Notes: ${{ github.event.inputs.build_notes }}"
+        echo "Branch: ${{ github.ref_name }}"
+        echo "Triggered by: ${{ github.actor }}"
+        
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
+        
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Generate code
+      run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      
+    - name: Create .env file
+      run: |
+        echo "NEWS_API_KEY=${{ secrets.NEWS_API_KEY }}" > .env
+        echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env
+        
+    - name: Run tests
+      if: github.event.inputs.run_tests == 'true'
+      run: |
+        echo "🧪 Running tests..."
+        flutter test --coverage
+        echo "✅ Tests completed"
+        
+    - name: Analyze code
+      if: github.event.inputs.run_tests == 'true'
+      run: |
+        echo "🔍 Analyzing code..."
+        flutter analyze
+        echo "✅ Analysis completed"
+        
+    - name: Build Debug APK
+      if: github.event.inputs.build_type == 'debug'
+      run: |
+        echo "🔨 Building Debug APK..."
+        flutter build apk --debug --build-name=manual-${{ github.run_number }} --build-number=${{ github.run_number }}
+        echo "✅ Debug APK built successfully"
+        
+    - name: Build Release APK
+      if: github.event.inputs.build_type == 'release'
+      run: |
+        echo "🔨 Building Release APK..."
+        flutter build apk --release --build-name=manual-${{ github.run_number }} --build-number=${{ github.run_number }}
+        echo "✅ Release APK built successfully"
+        
+    - name: Rename APK
+      run: |
+        BUILD_TYPE="${{ github.event.inputs.build_type }}"
+        if [ "$BUILD_TYPE" = "debug" ]; then
+          mv build/app/outputs/flutter-apk/app-debug.apk build/app/outputs/flutter-apk/expense-tracker-manual-debug-${{ github.run_number }}.apk
+        else
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/expense-tracker-manual-release-${{ github.run_number }}.apk
+        fi
+        
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: expense-tracker-manual-${{ github.event.inputs.build_type }}-${{ github.run_number }}
+        path: build/app/outputs/flutter-apk/*.apk
+        retention-days: 30
+        
+    - name: Deploy to Firebase App Distribution
+      if: github.event.inputs.deploy_firebase == 'true'
+      uses: wzieba/Firebase-Distribution-Github-Action@v1
+      with:
+        appId: ${{ secrets.FIREBASE_APP_ID }}
+        serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        groups: testers
+        file: build/app/outputs/flutter-apk/expense-tracker-manual-${{ github.event.inputs.build_type }}-${{ github.run_number }}.apk
+        releaseNotes: |
+          🚀 Manual Build #${{ github.run_number }}
+          
+          Build Type: ${{ github.event.inputs.build_type }}
+          Branch: ${{ github.ref_name }}
+          Commit: ${{ github.sha }}
+          Triggered by: ${{ github.actor }}
+          
+          Notes: ${{ github.event.inputs.build_notes }}
+          
+    - name: 🎉 Build Complete
+      run: |
+        echo "🎉 Build completed successfully!"
+        echo "📱 APK: expense-tracker-manual-${{ github.event.inputs.build_type }}-${{ github.run_number }}.apk"
+        echo "📦 Download from: Actions → This workflow run → Artifacts"
+        if [ "${{ github.event.inputs.deploy_firebase }}" = "true" ]; then
+          echo "🔥 Deployed to Firebase App Distribution"
+        fi

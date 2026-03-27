@@ -1,0 +1,66 @@
+name: 🚀 Build & Release APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build APK & Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        cache: true
+        
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+        
+    - name: Install dependencies
+      run: flutter pub get
+      
+    - name: Generate code
+      run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      
+    - name: Create environment
+      run: |
+        echo "NEWS_API_KEY=${{ secrets.NEWS_API_KEY || 'demo' }}" > .env
+        echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY || 'demo' }}" >> .env
+        
+    - name: Build APK
+      run: flutter build apk --release --build-name=1.0.${{ github.run_number }} --build-number=${{ github.run_number }}
+      
+    - name: Rename APK
+      run: |
+        mv build/app/outputs/flutter-apk/app-release.apk \
+           build/app/outputs/flutter-apk/expense-tracker-v1.0.${{ github.run_number }}.apk
+           
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v1.0.${{ github.run_number }}
+        name: "Expense Tracker v1.0.${{ github.run_number }}"
+        body: |
+          📱 **Expense Tracker APK**
+          
+          Version: v1.0.${{ github.run_number }}
+          Build: ${{ github.run_number }}
+          Commit: ${{ github.sha }}
+          
+          **Download & Install:**
+          1. Download the APK below
+          2. Enable "Unknown sources" on Android
+          3. Install the APK
+        files: build/app/outputs/flutter-apk/expense-tracker-v1.0.${{ github.run_number }}.apk
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

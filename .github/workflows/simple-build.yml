@@ -1,0 +1,152 @@
+name: 📱 Simple APK Build
+
+on:
+  push:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build Type'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+        - debug
+        - release
+
+env:
+  FLUTTER_VERSION: '3.24.0'
+
+jobs:
+  build-apk:
+    name: Build APK
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📋 Build Info
+      run: |
+        echo "🚀 Building APK for Expense Tracker"
+        echo "Branch: ${{ github.ref_name }}"
+        echo "Commit: ${{ github.sha }}"
+        echo "Build Type: ${{ github.event.inputs.build_type || 'auto' }}"
+        
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
+        
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+        
+    - name: Get dependencies
+      run: |
+        echo "📦 Getting Flutter dependencies..."
+        flutter pub get
+        
+    - name: Generate code
+      run: |
+        echo "🔧 Generating code..."
+        flutter packages pub run build_runner build --delete-conflicting-outputs
+        
+    - name: Create .env file
+      run: |
+        echo "🔑 Creating environment file..."
+        echo "NEWS_API_KEY=${{ secrets.NEWS_API_KEY || 'demo_key' }}" > .env
+        echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY || 'demo_key' }}" >> .env
+        
+    - name: Build Debug APK
+      if: github.event.inputs.build_type == 'debug' || (github.event_name == 'push' && github.ref != 'refs/heads/main')
+      run: |
+        echo "🔨 Building Debug APK..."
+        flutter build apk --debug --build-name=debug-${{ github.run_number }} --build-number=${{ github.run_number }}
+        echo "✅ Debug APK built successfully"
+        
+    - name: Build Release APK
+      if: github.event.inputs.build_type == 'release' || (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event.inputs.build_type == ''
+      run: |
+        echo "🔨 Building Release APK..."
+        flutter build apk --release --build-name=v1.0.${{ github.run_number }} --build-number=${{ github.run_number }}
+        echo "✅ Release APK built successfully"
+        
+    - name: Rename APK files
+      run: |
+        cd build/app/outputs/flutter-apk/
+        
+        # Rename based on what was built
+        if [ -f "app-debug.apk" ]; then
+          mv app-debug.apk expense-tracker-debug-${{ github.run_number }}.apk
+          echo "📱 Debug APK: expense-tracker-debug-${{ github.run_number }}.apk"
+        fi
+        
+        if [ -f "app-release.apk" ]; then
+          mv app-release.apk expense-tracker-v1.0.${{ github.run_number }}.apk
+          echo "📱 Release APK: expense-tracker-v1.0.${{ github.run_number }}.apk"
+        fi
+        
+        ls -la
+        
+    - name: Upload APK Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: expense-tracker-apk-${{ github.run_number }}
+        path: build/app/outputs/flutter-apk/*.apk
+        retention-days: 30
+        
+    - name: Get APK info
+      id: apk_info
+      run: |
+        cd build/app/outputs/flutter-apk/
+        APK_FILE=$(ls *.apk | head -1)
+        APK_SIZE=$(du -h "$APK_FILE" | cut -f1)
+        echo "apk_name=$APK_FILE" >> $GITHUB_OUTPUT
+        echo "apk_size=$APK_SIZE" >> $GITHUB_OUTPUT
+        
+    - name: Create Release (for main branch)
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v1.0.${{ github.run_number }}
+        name: "Expense Tracker v1.0.${{ github.run_number }}"
+        body: |
+          ## 📱 Expense Tracker APK Release
+          
+          **Build Information:**
+          - Version: v1.0.${{ github.run_number }}
+          - Build Number: ${{ github.run_number }}
+          - APK Size: ${{ steps.apk_info.outputs.apk_size }}
+          - Branch: ${{ github.ref_name }}
+          - Commit: ${{ github.sha }}
+          
+          **Download:**
+          - APK File: ${{ steps.apk_info.outputs.apk_name }}
+          
+          **Installation:**
+          1. Download the APK file
+          2. Enable "Install from unknown sources" on your Android device
+          3. Install the APK
+          
+          ---
+          *Built automatically by GitHub Actions*
+        files: |
+          build/app/outputs/flutter-apk/*.apk
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: 🎉 Build Summary
+      run: |
+        echo "🎉 Build completed successfully!"
+        echo "📱 APK Name: ${{ steps.apk_info.outputs.apk_name }}"
+        echo "📦 APK Size: ${{ steps.apk_info.outputs.apk_size }}"
+        echo "⬇️  Download: Go to Actions → This workflow → Artifacts"
+        if [ "${{ github.ref }}" = "refs/heads/main" ] && [ "${{ github.event_name }}" = "push" ]; then
+          echo "🚀 Release created: Check Releases tab"
+        fi
